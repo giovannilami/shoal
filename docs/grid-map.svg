@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1160" height="625" viewBox="0 0 1160 625" role="img" aria-labelledby="title desc">
+  <title id="title">Shoal 16 by 8 Grid control map</title>
+  <desc id="desc">Rows one to seven have SEQ and NOTE parameter labels; the bottom row selects tracks, pages, fine mode, freeze, mute and random.</desc>
+  <defs>
+    <pattern id="keys" x="200" y="104" width="48" height="48" patternUnits="userSpaceOnUse">
+      <rect x="4" y="4" width="40" height="40" rx="6" fill="#233640" stroke="#4d6c76" stroke-width="1.2"/>
+    </pattern>
+  </defs>
+  <rect width="1160" height="625" rx="22" fill="#0c1720"/>
+  <text x="32" y="46" fill="#9ee1d4" font-family="monospace" font-size="22" letter-spacing="2">GRID / PERFORMANCE MAP</text>
+  <text x="32" y="76" fill="#97b8ba" font-family="sans-serif" font-size="14">Both pages share the same 16 × 8 physical Grid. Rows 1–7 edit the selected track.</text>
+  <rect x="200" y="104" width="768" height="384" fill="url(#keys)"/>
+
+  <g font-family="sans-serif" font-size="17" fill="#d5ece8">
+    <text x="32" y="136">1  RATE</text><text x="987" y="136">NOTE ±</text>
+    <text x="32" y="184">2  LENGTH</text><text x="987" y="184">OCT ±</text>
+    <text x="32" y="232">3  CHANCE</text><text x="987" y="232">OCTAVE</text>
+    <text x="32" y="280">4  EVOLVE</text><text x="987" y="280">TRANSPOSE</text>
+    <text x="32" y="328">5  DIRECTION</text><text x="987" y="328">MIN NOTE</text>
+    <text x="32" y="376">6  SHIFT</text><text x="987" y="376">MAX NOTE</text>
+    <text x="32" y="424">7  FOLLOW</text><text x="987" y="424">SPREAD</text>
+    <text x="32" y="472" fill="#fff0b7">8  ACTIONS</text><text x="987" y="472" fill="#fff0b7">BOTH PAGES</text>
+  </g>
+  <text x="32" y="106" fill="#86caca" font-family="monospace" font-size="14">SEQ PAGE</text>
+  <text x="987" y="106" fill="#86caca" font-family="monospace" font-size="14">NOTE PAGE</text>
+
+  <!-- Bottom row assignments. Empty columns separate groups. -->
+  <g stroke="#9bd7d4" stroke-width="1.2">
+    <rect x="204" y="444" width="40" height="40" rx="6" fill="#356d73"/>
+    <rect x="252" y="444" width="40" height="40" rx="6" fill="#356d73"/>
+    <rect x="300" y="444" width="40" height="40" rx="6" fill="#356d73"/>
+    <rect x="348" y="444" width="40" height="40" rx="6" fill="#356d73"/>
+    <rect x="444" y="444" width="40" height="40" rx="6" fill="#315d74"/>
+    <rect x="492" y="444" width="40" height="40" rx="6" fill="#315d74"/>
+    <rect x="588" y="444" width="40" height="40" rx="6" fill="#6a5b38"/>
+    <rect x="636" y="444" width="40" height="40" rx="6" fill="#6a5b38"/>
+    <rect x="732" y="444" width="40" height="40" rx="6" fill="#584e66"/>
+    <rect x="780" y="444" width="40" height="40" rx="6" fill="#584e66"/>
+    <rect x="828" y="444" width="40" height="40" rx="6" fill="#584e66"/>
+    <rect x="876" y="444" width="40" height="40" rx="6" fill="#584e66"/>
+    <rect x="924" y="444" width="40" height="40" rx="6" fill="#8b5c55" stroke="#ffc2a7"/>
+  </g>
+  <g fill="#fff8df" font-family="monospace" font-size="13" text-anchor="middle">
+    <text x="224" y="469">T1</text><text x="272" y="469">T2</text><text x="320" y="469">T3</text><text x="368" y="469">T4</text>
+    <text x="464" y="469">S</text><text x="512" y="469">N</text>
+    <text x="608" y="469">F</text><text x="656" y="469">Z</text>
+    <text x="752" y="469">M1</text><text x="800" y="469">M2</text><text x="848" y="469">M3</text><text x="896" y="469">M4</text>
+    <text x="944" y="469">R</text>
+  </g>
+
+  <!-- Key landmarks are annotations, not text shown by the physical LEDs. -->
+  <g fill="none" stroke="#f4d786" stroke-width="2">
+    <circle cx="560" cy="128" r="15"/><circle cx="704" cy="128" r="15"/>
+    <circle cx="608" cy="176" r="15"/><circle cx="560" cy="224" r="15"/>
+  </g>
+  <g fill="#f4d786" font-family="monospace" font-size="12" text-anchor="middle">
+    <text x="560" y="132">1</text><text x="704" y="132">1.5</text>
+    <text x="608" y="180">16</text><text x="560" y="228">50</text>
+  </g>
+
+  <g font-family="sans-serif" fill="#a8c9c7" font-size="14">
+    <text x="32" y="529">T1–T4 select track   ·   S/N select Grid page   ·   hold F for ±1 edits   ·   Z freezes</text>
+    <text x="32" y="554">M1–M4 mute tracks   ·   R randomizes all 14 Grid parameters of the selected track</text>
+    <text x="32" y="584" fill="#f4d786">Gold circles annotate musical landmarks: Rate ×1 / ×1.5, Length 16, Chance 50%.</text>
+    <text x="32" y="605" fill="#638086">The real Grid has lights, not the letters or numbers shown in this explanatory drawing.</text>
+  </g>
+</svg>
