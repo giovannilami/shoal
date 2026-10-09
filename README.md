@@ -10,7 +10,7 @@ This is a **community beta**. PolyPerc, MIDI, n.b., Grid interaction and pset sa
 
 ## Start playing
 
-1. Put the entire `shoal-norns` folder in `/home/we/dust/code/` on norns, or—once this repository is public—install it in Maiden with `;install https://github.com/giovannilami/shoal-norns`.
+1. Put the entire `shoal-norns` folder in `/home/we/dust/code/` on norns, or install it in Maiden with `;install https://github.com/giovannilami/shoal-norns`.
 2. Select **SHOAL-NORNS** on norns. Track 1 plays the built-in PolyPerc engine immediately; Tracks 2–4 start with Output **Off** until you assign them.
 3. Turn **E1** to select a track. Turn **E2** for Rate and **E3** for Length. Press **K3** to arm a new seed; it lands at the next loop start. **K2** stops or starts playback.
 4. In **PARAMETERS → EDIT → TRACK 1–4**, choose an Output: PolyPerc, n.b., MIDI or crow. The Grid is optional.
@@ -85,4 +85,4 @@ See [detailed behavior, fidelity notes and test instructions](docs/DETAILED_GUID
 
 **Original Shoal:** [Ormer Modular](https://github.com/ormermodular/shoal), for the Expert Sleepers disting NT. Their original [manual](https://github.com/ormermodular/shoal/blob/main/docs/MANUAL.md) is the primary reference. **norns adaptation:** [@giovannilami](https://github.com/giovannilami), with its own interface and output routing. The original author deserves the primary credit for the musical concept and algorithm.
 
-The norns-specific code is offered under the [MIT licence](LICENSE); the original Ormer Modular MIT notice is reproduced in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). Contributions and bug reports are welcome once the public repository and lines thread exist. This project is not affiliated with or endorsed by Ormer Modular, Expert Sleepers or monome.
+The norns-specific code is offered under the [MIT licence](LICENSE); the original Ormer Modular MIT notice is reproduced in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). Contributions and bug reports are welcome via GitHub; a lines thread is planned. This project is not affiliated with or endorsed by Ormer Modular, Expert Sleepers or monome.
