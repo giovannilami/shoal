@@ -1,7 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="480" viewBox="0 0 128 64" role="img" aria-labelledby="title desc">
-  <title id="title">Shoal for norns: overview on the 128 by 64 display</title>
-  <desc id="desc">A close vector reconstruction of the real norns screen: four sixteen-step patterns at left and, for each track, rate, length, chance and evolve at right. The selected track shows TIDE direction and a moving playhead.</desc>
-  <!-- The SVG itself is the display: no decorative bezel, callout column or unused margins. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="325" viewBox="0 0 960 390" role="img" aria-labelledby="title desc">
+  <title id="title">Shoal for norns: screen and live controls</title>
+  <desc id="desc">A compact overview. At left, a close vector reconstruction of the 128 by 64 norns display shows four tracks and their rate, length, chance and evolve values. At right, the essential encoder and key controls.</desc>
+  <rect width="960" height="390" rx="16" fill="#0c1720"/>
+  <text x="28" y="29" fill="#8dd4d1" font-family="monospace" font-size="15" letter-spacing="2">SHOAL / NORNS</text>
+  <rect x="25" y="42" width="626" height="316" rx="8" fill="#263741" stroke="#55727b" stroke-width="1.5"/>
+  <!-- The display panel remains an exact 2:1 enlargement of the 128 x 64 UI. -->
+  <g transform="translate(28 45) scale(4.84375)">
   <rect width="128" height="64" fill="#101d26"/>
   <g shape-rendering="crispEdges">
     <path d="M1 2v7l6-3.5z" fill="#d6f5eb"/>
@@ -29,5 +33,26 @@
       <g fill="#b6d8db"><text x="76" y="48" textLength="7" lengthAdjust="spacingAndGlyphs">x1</text><text x="93" y="48" textLength="8" lengthAdjust="spacingAndGlyphs">16</text><text x="103" y="48" textLength="14" lengthAdjust="spacingAndGlyphs">%100</text><text x="119" y="48" textLength="7" lengthAdjust="spacingAndGlyphs">E0</text></g>
       <g fill="#b6d8db"><text x="76" y="62" textLength="7" lengthAdjust="spacingAndGlyphs">x1</text><text x="93" y="62" textLength="8" lengthAdjust="spacingAndGlyphs">16</text><text x="103" y="62" textLength="14" lengthAdjust="spacingAndGlyphs">%100</text><text x="119" y="62" textLength="7" lengthAdjust="spacingAndGlyphs">E0</text></g>
     </g>
+  </g>
+  </g>
+
+  <path d="M670 45V355" stroke="#344b55" stroke-width="1"/>
+  <g font-family="sans-serif">
+    <text x="690" y="61" fill="#8dd4d1" font-size="14" letter-spacing="2">FOUR VOICES</text>
+    <text x="690" y="88" fill="#e5f7f5" font-size="24" font-weight="700">Seed → pattern</text>
+    <text x="690" y="112" fill="#abc9c9" font-size="16">A playable norns adaptation</text>
+    <text x="690" y="131" fill="#abc9c9" font-size="16">of Ormer Modular’s Shoal.</text>
+    <path d="M690 148H932" stroke="#344b55" stroke-width="1"/>
+    <text x="690" y="177" fill="#fff9c7" font-size="18" font-weight="700">E1</text>
+    <text x="765" y="177" fill="#d6e9e7" font-size="17">choose track</text>
+    <text x="690" y="212" fill="#fff9c7" font-size="18" font-weight="700">E2 · E3</text>
+    <text x="765" y="212" fill="#d6e9e7" font-size="17">rate · length</text>
+    <text x="690" y="247" fill="#fff9c7" font-size="18" font-weight="700">K2</text>
+    <text x="765" y="247" fill="#d6e9e7" font-size="17">play · stop</text>
+    <text x="690" y="282" fill="#fff9c7" font-size="18" font-weight="700">K3</text>
+    <text x="765" y="282" fill="#d6e9e7" font-size="17">new seed</text>
+    <path d="M690 302H932" stroke="#344b55" stroke-width="1"/>
+    <text x="690" y="327" fill="#8dd4d1" font-size="15">n.b. · MIDI · crow</text>
+    <text x="690" y="347" fill="#829fa5" font-size="14">optional 16 × 8 Grid</text>
   </g>
 </svg>
