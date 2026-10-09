@@ -1,64 +1,41 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="410" viewBox="0 0 960 410" role="img" aria-labelledby="title desc">
-  <title id="title">Shoal for norns overview diagram</title>
-  <desc id="desc">Four independent full-pattern rows with moving playheads and rate, length, chance and evolve values.</desc>
-  <rect width="960" height="410" rx="22" fill="#0c1720"/>
-  <text x="58" y="34" fill="#8dd4d1" font-family="monospace" font-size="14" letter-spacing="3">SHOAL / NORNS</text>
-  <rect x="54" y="45" width="652" height="328" rx="14" fill="#263741" stroke="#55727b" stroke-width="2"/>
-  <rect x="62" y="53" width="636" height="312" rx="5" fill="#101d26"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="520" viewBox="0 0 960 520" role="img" aria-labelledby="title desc">
+  <title id="title">Shoal for norns: four-track overview</title>
+  <desc id="desc">An explanatory drawing of the norns 128 by 64 display at its exact two-to-one aspect ratio. Four tracks show sixteen steps each, playheads, rate, length, chance and evolve.</desc>
 
-  <!-- The 128 x 64 norns display, enlarged fivefold. This is a schematic. -->
-  <g transform="translate(62 53) scale(4.96875)" fill="#d6f5eb" font-family="monospace">
-    <text x="2" y="7" font-size="3.6" font-weight="bold">&#9654; T1 07/16 S347 FORW</text>
-    <text x="119" y="7" font-size="3.3">1/4</text>
-    <path d="M2 10H126" stroke="#41606c" stroke-width="0.3"/>
+  <rect width="960" height="520" rx="16" fill="#0c1720"/>
+  <rect x="18" y="18" width="924" height="468" rx="11" fill="#263741" stroke="#55727b" stroke-width="2"/>
+  <!-- The lit display is exactly 912 x 456: a 7.125x enlargement of 128 x 64. -->
+  <rect x="24" y="24" width="912" height="456" fill="#101d26"/>
 
-    <g fill="#8fd8d0">
-      <rect x="3" y="17" width="2" height="3"/><rect x="7" y="14" width="2" height="6"/><rect x="11" y="18" width="2" height="2"/><rect x="15" y="15" width="2" height="5"/>
-      <rect x="19" y="13" width="2" height="7"/><rect x="23" y="19" width="2" height="1"/><rect x="27" y="16" width="2" height="4"/><rect x="31" y="15" width="2" height="5"/>
-      <rect x="35" y="18" width="2" height="2"/><rect x="39" y="14" width="2" height="6"/><rect x="43" y="19" width="2" height="1"/><rect x="47" y="17" width="2" height="3"/>
-      <rect x="51" y="15" width="2" height="5"/><rect x="55" y="13" width="2" height="7"/><rect x="59" y="18" width="2" height="2"/><rect x="63" y="16" width="2" height="4"/>
+  <g transform="translate(24 24) scale(7.125)" shape-rendering="crispEdges">
+    <path d="M1 2v7l6-3.5z" fill="#d6f5eb"/>
+    <g font-family="monospace" font-size="3.6" fill="#d6f5eb">
+      <text x="11" y="8">T1 07/16 S347 FWD</text>
+      <text x="126" y="8" text-anchor="end">1/4</text>
     </g>
-    <rect x="30.4" y="12.5" width="3.2" height="8" fill="none" stroke="#fff9c7" stroke-width="0.65"/>
-    <text x="70" y="20" font-size="3.6" fill="#fff9c7">x1  16  %50  E5</text>
 
-    <g fill="#5e979c">
-      <rect x="3" y="33" width="2" height="1"/><rect x="7" y="30" width="2" height="4"/><rect x="11" y="28" width="2" height="6"/><rect x="15" y="32" width="2" height="2"/>
-      <rect x="19" y="29" width="2" height="5"/><rect x="23" y="31" width="2" height="3"/><rect x="27" y="33" width="2" height="1"/><rect x="31" y="30" width="2" height="4"/>
-      <rect x="35" y="28" width="2" height="6"/><rect x="39" y="33" width="2" height="1"/><rect x="43" y="30" width="2" height="4"/><rect x="47" y="32" width="2" height="2"/>
-      <rect x="51" y="29" width="2" height="5"/><rect x="55" y="31" width="2" height="3"/><rect x="59" y="33" width="2" height="1"/><rect x="63" y="30" width="2" height="4"/>
+    <!-- Four 16-step patterns occupy exactly the UI's x=2..65, with rows at y=20,34,48,62. -->
+    <g fill="none" stroke-width="3">
+      <path stroke="#9ce6d8" d="M3.5 18v3 M7.5 15v6 M11.5 19v2 M15.5 16v5 M19.5 14v7 M23.5 20v1 M27.5 17v4 M31.5 16v5 M35.5 19v2 M39.5 15v6 M43.5 20v1 M47.5 18v3 M51.5 16v5 M55.5 14v7 M59.5 19v2 M63.5 17v4"/>
+      <path stroke="#679ea3" d="M3.5 34v1 M7.5 31v4 M11.5 29v6 M15.5 33v2 M19.5 30v5 M23.5 32v3 M27.5 34v1 M31.5 31v4 M35.5 29v6 M39.5 34v1 M43.5 31v4 M47.5 33v2 M51.5 30v5 M55.5 32v3 M59.5 34v1 M63.5 31v4"/>
+      <path stroke="#679ea3" d="M3.5 45v4 M7.5 48v1 M11.5 44v5 M15.5 46v3 M19.5 43v6 M23.5 47v2 M27.5 45v4 M31.5 48v1 M35.5 44v5 M39.5 46v3 M43.5 43v6 M47.5 47v2 M51.5 45v4 M55.5 48v1 M59.5 44v5 M63.5 46v3"/>
+      <path stroke="#679ea3" d="M3.5 62v1 M7.5 60v3 M11.5 58v5 M15.5 61v2 M19.5 59v4 M23.5 57v6 M27.5 62v1 M31.5 60v3 M35.5 58v5 M39.5 61v2 M43.5 59v4 M47.5 57v6 M51.5 62v1 M55.5 60v3 M59.5 58v5 M63.5 61v2"/>
     </g>
-    <rect x="46.4" y="26.5" width="3.2" height="8" fill="none" stroke="#9dcfd0" stroke-width="0.55"/>
-    <text x="70" y="34" font-size="3.6" fill="#7bb0b4">/2  16  %80  E0</text>
 
-    <g fill="#5e979c">
-      <rect x="3" y="44" width="2" height="4"/><rect x="7" y="47" width="2" height="1"/><rect x="11" y="43" width="2" height="5"/><rect x="15" y="45" width="2" height="3"/>
-      <rect x="19" y="42" width="2" height="6"/><rect x="23" y="46" width="2" height="2"/><rect x="27" y="44" width="2" height="4"/><rect x="31" y="47" width="2" height="1"/>
-      <rect x="35" y="43" width="2" height="5"/><rect x="39" y="45" width="2" height="3"/><rect x="43" y="42" width="2" height="6"/><rect x="47" y="46" width="2" height="2"/>
-      <rect x="51" y="44" width="2" height="4"/><rect x="55" y="47" width="2" height="1"/><rect x="59" y="43" width="2" height="5"/><rect x="63" y="45" width="2" height="3"/>
+    <g fill="none" stroke-width="0.55" shape-rendering="geometricPrecision">
+      <rect x="26" y="13" width="4" height="8" stroke="#fff9c7"/>
+      <rect x="42" y="27" width="4" height="8" stroke="#9dcfd0"/>
+      <rect x="14" y="41" width="4" height="8" stroke="#9dcfd0"/>
+      <rect x="54" y="55" width="4" height="8" stroke="#9dcfd0"/>
     </g>
-    <rect x="14.4" y="40.5" width="3.2" height="8" fill="none" stroke="#9dcfd0" stroke-width="0.55"/>
-    <text x="70" y="48" font-size="3.6" fill="#7bb0b4">x1.5 16  %65  E2</text>
 
-    <g fill="#5e979c">
-      <rect x="3" y="61" width="2" height="1"/><rect x="7" y="58" width="2" height="4"/><rect x="11" y="56" width="2" height="6"/><rect x="15" y="60" width="2" height="2"/>
-      <rect x="19" y="57" width="2" height="5"/><rect x="23" y="59" width="2" height="3"/><rect x="27" y="61" width="2" height="1"/><rect x="31" y="58" width="2" height="4"/>
-      <rect x="35" y="56" width="2" height="6"/><rect x="39" y="61" width="2" height="1"/><rect x="43" y="58" width="2" height="4"/><rect x="47" y="60" width="2" height="2"/>
-      <rect x="51" y="57" width="2" height="5"/><rect x="55" y="59" width="2" height="3"/><rect x="59" y="61" width="2" height="1"/><rect x="63" y="58" width="2" height="4"/>
+    <g font-family="monospace" font-size="3.6">
+      <g fill="#fff9c7"><text x="68" y="20">x1</text><text x="86" y="20">16</text><text x="98" y="20">%50</text><text x="116" y="20">E5</text></g>
+      <g fill="#8ebdc0"><text x="68" y="34">/2</text><text x="86" y="34">16</text><text x="98" y="34">%80</text><text x="116" y="34">E0</text></g>
+      <g fill="#8ebdc0"><text x="68" y="48">x1.5</text><text x="86" y="48">16</text><text x="98" y="48">%65</text><text x="116" y="48">E2</text></g>
+      <g fill="#8ebdc0"><text x="68" y="62">/4</text><text x="86" y="62">16</text><text x="98" y="62">%95</text><text x="116" y="62">E0</text></g>
     </g>
-    <rect x="54.4" y="54.5" width="3.2" height="8" fill="none" stroke="#9dcfd0" stroke-width="0.55"/>
-    <text x="70" y="62" font-size="3.6" fill="#7bb0b4">/4  16  %95  E0</text>
   </g>
 
-  <g font-family="sans-serif">
-    <text x="742" y="90" fill="#fff9c7" font-size="16" font-weight="700">01 / selected track</text>
-    <text x="742" y="114" fill="#abc9c9" font-size="14">Header follows E1.</text>
-    <text x="742" y="158" fill="#fff9c7" font-size="16" font-weight="700">02 / moving playheads</text>
-    <text x="742" y="182" fill="#abc9c9" font-size="14">One per clocked track.</text>
-    <text x="742" y="226" fill="#fff9c7" font-size="16" font-weight="700">03 / complete patterns</text>
-    <text x="742" y="250" fill="#abc9c9" font-size="14">1–64 steps per row.</text>
-    <text x="742" y="294" fill="#fff9c7" font-size="16" font-weight="700">04 / live controls</text>
-    <text x="742" y="318" fill="#abc9c9" font-size="14">Rate · Length</text>
-    <text x="742" y="340" fill="#abc9c9" font-size="14">Chance · Evolve</text>
-  </g>
-  <text x="58" y="396" fill="#58777e" font-family="monospace" font-size="11">EXPLANATORY DRAWING · NOT A SCREENSHOT OR A FIXED MUSICAL PATTERN</text>
+  <text x="24" y="508" fill="#78949b" font-family="monospace" font-size="11">EXPLANATORY DRAWING · 128 × 64 DISPLAY AT TRUE 2:1 RATIO · NOT A SCREENSHOT</text>
 </svg>
