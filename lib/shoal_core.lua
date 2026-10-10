@@ -368,14 +368,12 @@ function Core:evaluate(index, step)
 
   local walked_step = step
   step = (step + track.shift) % track.length
-  -- The norns Tide rotates the complete pattern. Rhythm, ties and pitch all
-  -- use the same lookup position, so each pass is an exact cyclic shift of
-  -- the previous one (unless Evolve or other parameters change). The NT
-  -- original keeps rhythm anchored and rotates pitch alone; see README.
-  if track.direction == 6 and track.length > 1 then
-    step = (step + track.rot) % track.length
-  end
+  -- As on the disting NT, Tide keeps Chance and Tie on the rhythm step while
+  -- rotating only the pitch lookup by one step per completed pass.
   local pitch_step = step
+  if track.direction == 6 and track.length > 1 then
+    pitch_step = (step + track.rot) % track.length
+  end
 
   local rhythm_epoch = source.epoch[step]
   local pitch_epoch = source.epoch[pitch_step]
