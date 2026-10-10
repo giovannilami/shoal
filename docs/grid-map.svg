@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1160" height="625" viewBox="0 0 1160 625" role="img" aria-labelledby="title desc">
   <title id="title">Shoal 16 by 8 Grid control map</title>
-  <desc id="desc">Rows one to seven have SEQ and NOTE parameter labels; the bottom row selects tracks, pages, fine mode, freeze, mute and random.</desc>
+  <desc id="desc">Rows one to seven have SEQ and NOTE parameter labels; the bottom row selects tracks, pages, LFO, freeze, mute and random. Column five is empty.</desc>
   <defs>
     <pattern id="keys" x="200" y="104" width="48" height="48" patternUnits="userSpaceOnUse">
       <rect x="4" y="4" width="40" height="40" rx="6" fill="#233640" stroke="#4d6c76" stroke-width="1.2"/>
@@ -32,7 +32,7 @@
     <rect x="348" y="444" width="40" height="40" rx="6" fill="#356d73"/>
     <rect x="444" y="444" width="40" height="40" rx="6" fill="#315d74"/>
     <rect x="492" y="444" width="40" height="40" rx="6" fill="#315d74"/>
-    <rect x="588" y="444" width="40" height="40" rx="6" fill="#6a5b38"/>
+    <rect x="588" y="444" width="40" height="40" rx="6" fill="#4a6e57"/>
     <rect x="636" y="444" width="40" height="40" rx="6" fill="#6a5b38"/>
     <rect x="732" y="444" width="40" height="40" rx="6" fill="#584e66"/>
     <rect x="780" y="444" width="40" height="40" rx="6" fill="#584e66"/>
@@ -43,7 +43,7 @@
   <g fill="#fff8df" font-family="monospace" font-size="13" text-anchor="middle">
     <text x="224" y="469">T1</text><text x="272" y="469">T2</text><text x="320" y="469">T3</text><text x="368" y="469">T4</text>
     <text x="464" y="469">S</text><text x="512" y="469">N</text>
-    <text x="608" y="469">F</text><text x="656" y="469">Z</text>
+    <text x="608" y="469">L</text><text x="656" y="469">Z</text>
     <text x="752" y="469">M1</text><text x="800" y="469">M2</text><text x="848" y="469">M3</text><text x="896" y="469">M4</text>
     <text x="944" y="469">R</text>
   </g>
@@ -59,8 +59,8 @@
   </g>
 
   <g font-family="sans-serif" fill="#a8c9c7" font-size="14">
-    <text x="32" y="529">T1–T4 select track   ·   S/N select Grid page   ·   hold F for ±1 edits   ·   Z freezes</text>
-    <text x="32" y="554">M1–M4 mute tracks   ·   R randomizes all 14 Grid parameters of the selected track</text>
+    <text x="32" y="529">T1–T4 select track   ·   S/N select page   ·   L: LFO toggle/range   ·   Z: freeze</text>
+    <text x="32" y="554">Hold L + two endpoints to assign; repeat the pair to remove   ·   M1–M4 mute   ·   R randomizes</text>
     <text x="32" y="584" fill="#f4d786">Gold circles annotate musical landmarks: Rate ×1 / ×1.5, Length 16, Chance 50%.</text>
     <text x="32" y="605" fill="#638086">The real Grid has lights, not the letters or numbers shown in this explanatory drawing.</text>
   </g>

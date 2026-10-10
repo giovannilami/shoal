@@ -10,7 +10,7 @@
   <g shape-rendering="crispEdges">
     <path d="M1 2v7l6-3.5z" fill="#d6f5eb"/>
     <g fill="#d6f5eb" font-family="monospace" font-size="8" font-weight="bold">
-      <text x="11" y="8" textLength="70" lengthAdjust="spacingAndGlyphs">T1 12/16 S414 TIDE</text>
+      <text x="11" y="8" textLength="70" lengthAdjust="spacingAndGlyphs">T1 12/16 S:414 TIDE</text>
       <text x="116" y="8" textLength="11" lengthAdjust="spacingAndGlyphs">1/4</text>
     </g>
     <!-- The plot follows shoal_ui.lua: x=2..65, 16 four-pixel cells, y=20/34/48/62. -->
