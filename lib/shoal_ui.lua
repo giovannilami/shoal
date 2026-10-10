@@ -86,7 +86,8 @@ function UI.overview_header(core, selected, modifier, short_direction, separator
   if modifier then
     return string.format("T%d  E2 CHANCE  E3 EVOLVE", selected)
   end
-  local seed = string.format("S%03d%s", selected_track.seed,
+  -- The Particle S resembles 5; the colon separates the label from its value.
+  local seed = string.format("S:%d%s", selected_track.seed,
     selected_track.pending_seed and "*" or "")
   local parts = {
     "T" .. selected,

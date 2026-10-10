@@ -47,10 +47,6 @@ GridUI.PAGES = {
   },
 }
 
-local function clamp(value, low, high)
-  return math.max(low, math.min(high, value))
-end
-
 local function round(value)
   return math.floor(value + 0.5)
 end
@@ -130,6 +126,9 @@ local function value_to_column(field, value)
   return 1 + round((value - field.low) * 15 / (field.high - field.low))
 end
 
+GridUI.value_at = column_to_value
+GridUI.column_for = value_to_column
+
 function GridUI.new(options)
   assert(options and options.params and options.grid
     and options.selected_track and options.select_track,
@@ -141,9 +140,12 @@ function GridUI.new(options)
     select_track = options.select_track,
     feedback = options.feedback or function() end,
     random = options.random or math.random,
+    mod = options.mod,
     track_count = options.track_count or 4,
     page = 1,
-    fine = false,
+    mod_held = false,
+    mod_used = false,
+    mod_first = nil,
     device = nil,
     dirty = true,
   }, GridUI)
@@ -152,7 +154,7 @@ end
 function GridUI:connect(port)
   local device = self.api.connect(port)
   self.device = device
-  self.fine = false
+  self.mod_held, self.mod_used, self.mod_first = false, false, nil
   if device then
     device.key = function(x, y, z) self:key(x, y, z) end
   end
@@ -164,7 +166,7 @@ function GridUI:disconnect(removed)
   if not current or not removed or current.id == removed.id
       or current.port == removed.port then
     self.device = nil
-    self.fine = false
+    self.mod_held, self.mod_used, self.mod_first = false, false, nil
     self.dirty = true
   end
 end
@@ -175,7 +177,7 @@ function GridUI:clear()
     self.device:refresh()
   end
   self.device = nil
-  self.fine = false
+  self.mod_held, self.mod_used, self.mod_first = false, false, nil
 end
 
 function GridUI:mark_dirty()
@@ -264,8 +266,59 @@ end
 
 function GridUI:key(x, y, z)
   if x < 1 or x > 16 or y < 1 or y > 8 then return end
-  if y == 8 and x == 9 then
-    self.fine = z == 1
+  if self.mod and y == 8 and x == 9 then
+    if z == 1 then
+      self.mod_held, self.mod_used, self.mod_first = true, false, nil
+    else
+      if self.mod_held and not self.mod_used then
+        local track = self.selected_track()
+        self.mod:toggle(track)
+        self.feedback(string.format("T%d LFO %s", track,
+          self.mod:enabled(track) and "ON" or "OFF"))
+      end
+      self.mod_held, self.mod_used, self.mod_first = false, false, nil
+    end
+    self.dirty = true
+    return
+  end
+  if self.mod_held then
+    if z ~= 1 then return end
+    self.mod_used = true
+    if y == 8 then
+      if x == 6 or x == 7 then
+        -- Allow several target ranges, even across pages, in one LFO hold.
+        -- An unfinished pair cannot span two different parameter rows.
+        self.mod_first = nil
+        self:_bottom_key(x)
+        self.dirty = true
+      end
+      return
+    end
+    local field = GridUI.PAGES[self.page][y]
+    if not self.mod:is_target(field.id) then
+      self.feedback("LFO: NOT ASSIGNABLE")
+      self.mod_first = nil
+    elseif not self.mod_first or self.mod_first.id ~= field.id then
+      self.mod_first = { id = field.id, x = x }
+      self.feedback("LFO " .. field.label .. ": SELECT END")
+    else
+      local track = self.selected_track()
+      local first, last = math.min(self.mod_first.x, x),
+        math.max(self.mod_first.x, x)
+      local old_first, old_last = self.mod:columns(track, field.id)
+      if self.mod:assigned(track, field.id)
+          and first == old_first and last == old_last then
+        self.mod:assign(track, field.id, false)
+        self.feedback(string.format("T%d LFO %s OFF", track, field.label))
+      else
+        self.mod:set_range(track, field.id, first, last)
+        self.mod:assign(track, field.id, true)
+        local low, high = self.mod:range_values(track, field.id)
+        self.feedback(string.format("T%d LFO %s %s..%s", track,
+          field.label, tostring(low), tostring(high)))
+      end
+      self.mod_first = nil
+    end
     self.dirty = true
     return
   end
@@ -277,12 +330,7 @@ function GridUI:key(x, y, z)
     local track = self.selected_track()
     local id = track_id(track, field.id)
     local old = self.params:get(id)
-    local value
-    if self.fine then
-      value = clamp(old + (x <= 8 and -1 or 1), field.low, field.high)
-    else
-      value = column_to_value(field, x)
-    end
+    local value = column_to_value(field, x)
     if value ~= nil then
       if value ~= old then self.params:set(id, value) end
       self:_field_feedback(field, id, track)
@@ -316,6 +364,21 @@ function GridUI:_draw_field(device, field, y, value)
       device:led(x, y, x == cursor and 15 or x < cursor and 5 or 1)
     end
   end
+  if self.mod and self.mod:assigned(self.selected_track(), field.id) then
+    local track = self.selected_track()
+    local first, last = self.mod:columns(track, field.id)
+    local active = self.mod:active(track, field.id)
+    device:led(first, y, active and 10 or 6)
+    device:led(last, y, active and 10 or 6)
+    if self.mod:active(track, field.id) then
+      device:led(value_to_column(field, self.mod:value(track, field.id)), y, 15)
+    else
+      device:led(cursor, y, 15)
+    end
+  end
+  if self.mod_first and self.mod_first.id == field.id then
+    device:led(self.mod_first.x, y, 15)
+  end
 end
 
 function GridUI:redraw_if_dirty()
@@ -327,8 +390,11 @@ function GridUI:redraw_if_dirty()
   local track = self.selected_track()
   for y = 1, 7 do
     local field = GridUI.PAGES[self.page][y]
-    self:_draw_field(device, field, y,
-      self.params:get(track_id(track, field.id)))
+    local value = self.params:get(track_id(track, field.id))
+    if self.mod and self.mod:active(track, field.id) then
+      value = self.mod:value(track, field.id)
+    end
+    self:_draw_field(device, field, y, value)
   end
   for t = 1, self.track_count do
     device:led(t, 8, t == track and 15 or 4)
@@ -337,7 +403,10 @@ function GridUI:redraw_if_dirty()
   end
   device:led(6, 8, self.page == 1 and 15 or 4)
   device:led(7, 8, self.page == 2 and 15 or 4)
-  device:led(9, 8, self.fine and 15 or 3)
+  if self.mod then
+    device:led(9, 8, self.mod_held and 12
+      or self.mod:enabled(track) and 15 or 3)
+  end
   device:led(10, 8, self.params:get("shoal_freeze") == 2 and 15 or 3)
   device:led(16, 8, 7) -- momentary Random, not the Norns K2 transport
   device:refresh()

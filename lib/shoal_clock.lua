@@ -5,7 +5,7 @@
 local Clock = {}
 Clock.__index = Clock
 
-function Clock.new(core, on_step, runtime, track_count)
+function Clock.new(core, on_step, runtime, track_count, hooks)
   assert(core and on_step and runtime, "core, callback and clock runtime required")
   track_count = track_count or core.NUM_TRACKS
   assert(track_count >= 1 and track_count <= core.NUM_TRACKS,
@@ -19,6 +19,9 @@ function Clock.new(core, on_step, runtime, track_count)
     reset_pending = true,
     running = false,
     coroutine_id = nil,
+    next_beat = {},
+    periods = {},
+    hooks = hooks or {},
   }, Clock)
 end
 
@@ -26,6 +29,8 @@ function Clock:reset()
   self.core:reset()
   self.tick_count = 0
   self.reset_pending = true
+  self.next_beat = {}
+  self.periods = {}
 end
 
 -- A step k occurs at beat k * den / num. Choose only steps in the current
@@ -36,21 +41,38 @@ function Clock:plan_tick()
     self.tick_count = self.tick_count + 1
     return {}
   end
-  if self.reset_pending then self.tick_count = 0 end
+  if self.reset_pending then
+    self.tick_count = 0
+    self.next_beat = {}
+    self.periods = {}
+  end
+
+  local tick = self.tick_count
+  if self.hooks.before_tick then self.hooks.before_tick(tick) end
 
   local events = {}
   for track = 1, self.track_count do
     local num, den = self.core.rate_ratio(self.core.tracks[track].rate)
-    local first_step = (self.tick_count * num + den - 1) // den
-    local after_last_step = ((self.tick_count + 1) * num + den - 1) // den
     local period = den / num
-    for step = first_step, after_last_step - 1 do
+    local next_beat = self.next_beat[track] or tick
+    local old_period = self.periods[track]
+    if next_beat < tick - 1e-9 then next_beat = tick end
+    if old_period and old_period ~= period then
+      -- Preserve the fraction remaining until the next event when Rate moves.
+      next_beat = tick + (next_beat - tick) * period / old_period
+    end
+    while next_beat < tick + 1 - 1e-9 do
+      local offset = math.max(0, next_beat - tick)
       events[#events + 1] = {
         track = track,
-        offset = (step * den - self.tick_count * num) / num,
+        offset = offset,
         step_beats = period,
+        beat = tick + offset,
       }
+      next_beat = next_beat + period
     end
+    self.next_beat[track] = next_beat
+    self.periods[track] = period
   end
 
   table.sort(events, function(a, b)
@@ -64,8 +86,10 @@ end
 
 function Clock:fire(item)
   if self.core.freeze then return end
+  if self.hooks.before_step then self.hooks.before_step(item.track, item.beat) end
   local event = self.core:advance(item.track)
   self.on_step(event, item.step_beats)
+  if self.hooks.after_step then self.hooks.after_step(item.track, event, item.beat) end
 end
 
 function Clock:start()
