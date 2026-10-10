@@ -8,7 +8,7 @@ Unless noted, file paths and test commands below are relative to the repository 
 
 ## Install and play on Norns
 
-1. Copy this entire `shoal-norns` folder into `/home/we/dust/code/` on norns using SFTP or the file share. The main script must end up at `/home/we/dust/code/shoal-norns/shoal-norns.lua`. Once the public GitHub repository exists, its URL can be passed to Maiden's `;install` command instead; see [the publishing checklist](PUBLISHING.md).
+1. Copy this entire `shoal-norns` folder into `/home/we/dust/code/` on norns using SFTP or the file share. The main script must end up at `/home/we/dust/code/shoal-norns/shoal-norns.lua`. When the GitHub repository is public, its URL can be passed to Maiden's `;install` command instead; see [the publishing checklist](PUBLISHING.md).
 2. Open Maiden at `norns.local`, then choose `SHOAL-NORNS` from the Norns SELECT menu. If the script is not listed yet, restart Norns or reload the script list.
 3. Track 1 is routed to the built-in PolyPerc engine by default. Listen on Norns headphones or audio outputs. Tracks 2–4 start with output Off; all four advance their musical state.
 4. On the overview, use E1 to select a track, E2 for its rate, E3 for its length, K1+E2 for Chance, and K1+E3 for Evolve. K2 runs/stops; K3 arms a new seed for the selected track. Hold K1 and press K3/K2 to move forward/backward through the four script pages. More settings are in PARAMETERS.
@@ -32,6 +32,87 @@ The screen has four pages:
 | 4 Global | Scale, Root, Weight, Freeze, selected track's Output and MIDI channel, MIDI port | Select field / Change value |
 
 E1 selects the track on every page. K2 toggles Run and K3 arms a new seed on every page; hold K1 with K2/K3 to switch pages without triggering those actions. The overview follows the NT manual's full-pattern density and live-position approach, adapted to norns' 128 × 64 screen. Its refresh is limited to 20 frames/s: at extreme selectable rates such as ×32, intermediate positions can pass between frames even though all clocked events still play.
+
+## Parameter reference: what each control changes
+
+Shoal is not a conventional sequencer in which you enter every note. A **Seed** generates a repeatable set of pitches, rests and Tie decisions. On each clock event, **Direction** chooses a position, **Shift** offsets the position used for lookup, and the track's pitch settings shape the resulting note. **Chance** may turn that position into a rest; **Breathe** or **Mute** may silence it. Finally, the norns-only **Min note / Max note / Spread** stage adjusts the note sent to the selected **Output**. Changing a parameter does not rewrite the Seed. With Evolve at 0, returning to the same settings returns to the same generated material.
+
+Parameters marked *global* affect all four tracks. The others belong to one track; choose it with E1, then use the indicated screen page or its `TRACK 1`–`TRACK 4` group under **PARAMETERS → EDIT**. The menu is the complete editor. Page 1 and Grid provide quicker access to selected values, not separate copies of the parameters. A norns pset saves these settings.
+
+### Global controls
+
+| Parameter | Where; range | What you will hear or see |
+| --- | --- | --- |
+| **Run** | K2; menu `Off / On` | Starts or stops all four playheads together. Stopping closes held MIDI, n.b. and crow notes; starting again resumes the musical state rather than choosing new seeds. It is transport, not a track mute. |
+| **Freeze** | Page 4, Grid row 8 column 10, menu `Off / On` | Suspends advances on every track. Notes already held by MIDI, n.b. or crow are sustained until playback continues; it does not create notes when nothing is sounding. PolyPerc's own percussive decay cannot be held. A frozen symbol replaces Play/Stop in the overview. |
+| **Scale** | Page 4 or menu; 13 choices | Chooses the pitch classes available to all tracks: Chromatic, Major, Natural minor, Harmonic minor, Dorian, Phrygian, Lydian, Mixolydian, Major/Minor pentatonic, Blues, Hirajoshi and In-sen. For instance, C Major uses C–D–E–F–G–A–B; changing to C Natural minor changes the pitches generated from the same seed. Scale does not change rate or rests. |
+| **Root MIDI note** | Page 4 or menu; `0–127`, default `48` (C3) | Sets the tonal centre for the scale and for Spread. It does **not** force every note to equal the root. With default Min/Max and Spread, moving Root by 12 shifts the melody by an octave except where MIDI-range folding intervenes. |
+| **Weight** | Page 4 or menu; `0–100`, default `0` | On approximately this percentage of *sounding* steps, pulls the chosen scale degree toward the root, third or fifth of the selected scale. At 0 there is no pull; at 100 every sounding step gets this treatment. It changes pitch, not the likelihood of a rest. Try 60 with a large Note variation to make a wandering melody gravitate toward more stable tones. |
+| **MIDI port** | Page 4 or menu; `1–16`, default `1` | Selects the norns MIDI device slot shared by every track routed to MIDI. Match the slot in **SYSTEM → DEVICES → MIDI**; it is **not** the MIDI channel. Switching ports closes held notes and reconnects the output. |
+| **Reset playheads** | Menu trigger | Puts the clock and playheads back at their starting positions for the next advance. It does not choose new seeds or clear accumulated Evolve changes. Useful when you want several tracks to restart together. |
+| **Reseed all** | Menu trigger | Generates a Seed value for each of the four tracks. Each one is armed and takes effect at that track's next loop origin, which may occur at different times when rates or lengths differ. It does not mean “reset all playheads.” |
+
+Norns' **CLOCK** menu controls the master tempo and external synchronization; this script does not add a separate BPM or MIDI-clock-source parameter. Rate ×1 means one step per quarter-note beat of that clock.
+
+### Per-track rhythm, movement and generation
+
+| Parameter | Where; range | What it changes in practice |
+| --- | --- | --- |
+| **Seed** | Page 2 or menu; `0–999` | A recipe number for repeatable musical material, **not** an amount of randomness. Entering another number or pressing K3 arms a new recipe; the `*` in the overview shows that it is pending. It becomes active at that track's loop origin, rather than interrupting the current phrase. The same seed and settings yield the same base material. If the track follows another, it uses the source's active seed; its own seed remains available when Follow is turned Off. |
+| **Length** | E3 on page 1; menu/Grid; `1–64`, default `16` | Number of positions in this track's pattern. A 7-step track beside a 16-step track creates a polymetric cycle. Length does not automatically change when you stop, start or reseed. Changing it alters where the walk wraps and how Shift/Tide are interpreted. |
+| **Rate** | E2 on page 1; menu/Grid; `/32` to `×32`, default `×1` | Speed relative to the norns beat. `×1` plays one position per quarter note; `×2` plays two; `×4` plays four (16th-note spacing in 4/4); `/2` advances once every two beats. Fractional choices such as `×1.5` produce three advances in two beats without rounding to a simpler rate. Rate changes timing, **not** Length or Seed. The menu has 27 choices; Grid offers a musical subset. |
+| **Direction** | Page 2 or menu/Grid; 15 modes | Selects the order in which positions are visited. It does not directly transpose notes. See the complete mode table below; Tide is a special case because it rotates pitch against a fixed rhythmic position. |
+| **Shift** | Page 2 or menu/Grid; `−63…+63` steps, default `0` | Offsets the seeded lookup relative to the visited position. On a 16-step track, `+1` makes position 1 read the material previously at position 2; `−1` reads position 16. It shifts notes **and** seeded rests/Tie decisions, but leaves the playhead's clock position alone. The change persists; set it back to 0 to recover the unshifted lookup. It is not a semitone transpose. |
+| **Chance** | K1+E2 on page 1; menu/Grid; `0–100%`, default `100%` | Whether each visited position produces a note. At 100% every position passes; at 0% none do; at 50% roughly half are rests. This is seeded, so the rest pattern normally repeats rather than being newly tossed on every loop. The playhead still advances through rests. |
+| **Evolve** | K1+E3 on page 1; menu/Grid; `0–100%`, default `0%` | At a phrase boundary, approximately this share of positions receives a new generation “epoch,” changing its pitch and potentially its Chance/Tie result without changing the Seed number. At 0 the material stays fixed; try 5% for slow movement. These changes accumulate. Reseeding starts a fresh lineage. A follower hears the source's evolving material; its own Evolve setting does not independently re-roll the source material. |
+| **Breathe** | Page 2 or menu; `0–100%`, default `0%` | Probability that the track sits out a phrase while the playhead continues. At 0 there is no phrase-level silence; 100 can keep it silent. Unlike Chance, it silences a whole stretch rather than selecting individual rests. It is most straightforward with an ordered Direction such as Forwards. In Random, Drunk, Pools and Skitter, the current core treats each advance as a boundary, so Breathe (and Evolve) can update more often than once per Length steps. |
+| **Gate length** | Page 2 or menu; `5–95%`, default `50%` | Duration requested for a note as a percentage of the interval to the next step. With Rate ×1, a 50% gate asks for half a beat. It matters most on sustained MIDI, n.b. or crow voices; a percussive PolyPerc hit has its own envelope. A rest, mute, stop or new event can close a note sooner. |
+| **Tie** | Page 2 or menu; `0–100%`, default `0%` | Seeded probability of marking a sounding position as tied. In this norns output layer a tied event requests a provisional 1.5-step gate, but the next event still closes and retriggers it. Do **not** expect guaranteed NT-style legato or slides yet. Chance=0 still makes a rest; Tie is not a substitute for a sounding step. |
+| **Sample source / Follow** | Page 2 or menu/Grid; `Off`, Track 1–4 | Borrows another track's **active seed and evolution**, so melodies can be related while each track retains its own Rate, Length, Direction, Chance, Shift, pitch offsets, Breathe, Gate, Mute and output. Example: set Track 2 to follow Track 1, Octave `−1` and Rate `/2` for a slower bass relative. The source's reseed reaches the follower when it becomes active. `Off` returns to Track 2's own seed; avoid self-follow or circular source chains in the menu. |
+| **Mute** | Page 2, menu, Grid bottom row columns 12–15 | Silences this track's output immediately and closes any held note, but its playhead and generation continue. Unmuting rejoins the current position, not the beginning. The Grid has a separate mute key for each track. `Output = Off` also makes a track silent, but changes the routing rather than its mute state. |
+
+### Per-track pitch and output
+
+Shoal first calculates a scale-constrained MIDI note. The following pitch controls shape that calculation; the final Min/Max/Spread controls then map the note for output. These are different from Rate, Length, Chance and Gate: they affect **which pitch** is sent, not **when** a step occurs.
+
+| Parameter | Where; range | What it changes in practice |
+| --- | --- | --- |
+| **Note variation** (`NOTE +/−`) | Page 3 or menu/Grid; `−100…+100`, default `0` | The absolute amount controls both how often and how far a note deviates from its seeded base pitch, up to 12 **scale degrees** at full amount. The sign chooses direction: positive only reaches upward, negative downward. `0` removes this added variation and reveals the base melody; it does not silence the track. This is seeded, so a given step's deviation repeats until its material evolves or is reseeded. |
+| **Oct variation** (`OCT +/−`) | Page 3 or menu/Grid; `−100…+100`, default `0` | Similar to Note variation, but makes occasional whole-octave jumps in the signed direction, up to five octaves at full amount. `+30` means occasional upward leaps, **not** “transpose everything by 30%.” Set to 0 to remove the extra jumps. |
+| **Octave** | Page 3 or menu/Grid; `−3…+3`, default `0` | Fixed octave offset for **every** sounding note on this track: `−1` lowers it by one octave, `+1` raises it by one. This is the simple way to put a follower into bass or high-register territory. Extreme results are folded back into MIDI range 0–127. |
+| **Transpose** | Page 3 or menu/Grid; `−7…+7`, default `0` | Fixed shift in **scale degrees**, not semitones. In C Major, `+2` shifts C to E; in a different scale the semitone distance may differ. This keeps the track inside the selected global scale. For a fixed chromatic semitone shift, change Root instead—but Root affects all tracks. |
+| **Min note** | Page 3 or menu/Grid; MIDI `0–127`, default `0` | Lowest MIDI pitch the norns output transform may send for this track. Set it, for example, to 48 to keep a bass voice at C3 or above. If raised past Max note, Max is raised to match. It does not change the Seed or the track's timing. |
+| **Max note** | Page 3 or menu/Grid; MIDI `0–127`, default `127` | Highest MIDI pitch the output transform may send. Set it to 72 to keep a voice at C5 or below. If lowered beneath Min note, Min follows. Together Min and Max make a hard pitch window; when it contains scale notes, the output snaps to the nearest one. |
+| **Spread %** | Page 3 or menu/Grid; `0–200%`, default `100%` | Contracts or expands each note's distance from the global Root **before** applying Min/Max and scale snapping. `100%` preserves the core pitch, `0%` draws it to the nearest allowed note around Root, and `150%` pushes it farther away. For example, with Root C3 (48), a raw note C4 (60) targets 54 at 50% or 66 at 150%, before scale/range snapping. It does not alter the seeded pattern. The overview's bars show the mapped notes, normalized within each track; they are not a numeric MIDI-note display. |
+| **Output** | Page 4 or menu per track; `Off`, PolyPerc, n.b. (if installed), MIDI, crow 1/2 or crow 3/4 | Chooses **where** this track's notes go. Track 1 defaults to PolyPerc; Tracks 2–4 default to Off but still run internally. A routing change closes a held note. PolyPerc plays through norns audio; MIDI goes to the chosen port/channel; n.b. uses a selected note player; crow uses output 1/3 for pitch and 2/4 for a 5 V gate. One crow pair is monophonic, so sharing a pair between tracks can cut off the other track's note. |
+| **MIDI channel** | Page 4 or menu per track; `1–16`, default = track number | Channel sent by this track **when Output is MIDI**. It does not pick the physical device—that is the global MIDI port. The current script sends a fixed velocity of 100; there is no per-track velocity parameter. |
+| **n.b. voice** | Menu per track, only when n.b. is installed | Chooses which installed note player receives the track when `Output = n.b.`. The selected voice's own synthesis/sample controls appear under **N.B. SOUND** in the top-level EDIT menu, not in Shoal's Track/Pitch pages. Their names and meanings depend on that voice. Two tracks assigned the same voice share its sound settings. |
+
+The 13 scales are shared by all tracks, while Min/Max/Spread and the other track pitch settings are independent. For a safe first pitch experiment, leave Min/Max at `0–127` and Spread at `100%`, set a scale and Root, then try Note variation `+30` on one track. Only after you like the melody, narrow that track's Min/Max or change its Spread. This makes it easier to hear which layer is responsible for the change.
+
+### All 15 Direction modes
+
+Direction changes the **walk through positions**, not the Seed. A numbered example below assumes a pattern of at least four positions. Random-like modes can revisit or skip positions; the ordered modes have recognizable cycles. Changing back to Forwards with Evolve at 0 lets you hear the seed's ordinary order again.
+
+| Mode | Movement and practical use |
+| --- | --- |
+| **Forwards** | `1, 2, 3, 4…` then wraps. The clearest starting point for hearing what a Seed contains. |
+| **Reverse** | Visits the last position, then moves backward to 1. Same material in reverse order. |
+| **Pendulum** | Moves forward and back, repeating each end before changing direction: `1, 2, 3, 4, 4, 3, 2, 1, 1…`. Can give the ends extra emphasis. |
+| **Random** | Chooses a position on every advance. It may repeat one immediately or miss others for a while; the walk uses a shared runtime random stream, so interleaving with other tracks matters. |
+| **Drunk** | From the current position, roughly 50% chance forward, 25% stay, 25% back, wrapping at the edges. Good for a wandering but locally connected melody. |
+| **Pong** | Bounces between ends like Pendulum, but plays each end only once: `1, 2, 3, 4, 3, 2, 1…`. |
+| **Tide** | Visits the rhythmic positions in order. After each complete pass, the **pitch lookup** rotates one position while Chance rests and Tie decisions stay at their rhythmic positions. A pitch that sat behind a rest can become audible at another position. It realigns after `Length` passes; this rotation does not rewrite the Seed. |
+| **Shuffle** | Visits every position exactly once per pass in a reshuffled order. Unlike Random, there are no omitted or repeated positions within one pass. Useful for rearranging a motif while retaining its ingredients. |
+| **Pools** | Circles a small pocket of three or four nearby positions for a while, then jumps to another pocket. Makes short motifs that linger and move on. |
+| **Stride** | Overlapping two-ahead/one-back walk such as `1, 3, 2, 4, 3, 5…`. A cycle takes twice Length advances; produces a loping feel. |
+| **Gravity** | Mostly moves forward, but sometimes snaps back to position 1 at a seed-derived rate. This is movement gravity, separate from pitch **Weight**. |
+| **Converge** | Alternates inward from both ends: `1, last, 2, second-last…`. A motif folds toward its centre. |
+| **Diverge** | Starts near the centre and alternates outward toward the ends—the counterpart of Converge. |
+| **Skitter** | Random positions, but never the same one twice in a row (unless Length is 1). Useful when Random's immediate repetitions are too static. |
+| **Anchor** | Alternates position 1 with positions 2, 3, 4…: `1, 2, 1, 3, 1, 4…`. Makes a recurring anchor note between excursions. |
+
+For an immediate comparison, set one track to Length 4, Chance 100%, Evolve 0% and Rate ×1. Listen in Forwards, then Pendulum, Pong, Shuffle and Tide without changing Seed. In Tide, watch the **rest positions** if you lower Chance: they stay in place while sounding pitches move from pass to pass. In Shuffle, the visited position itself jumps. If you want a completely fresh melody instead, change Seed or press K3.
 
 ## Optional 16 × 8 Grid
 
