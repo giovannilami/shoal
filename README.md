@@ -6,22 +6,22 @@ Four generative melodies for **norns**, with an optional **16 × 8 Grid** perfor
 
 > **Credit first:** [Shoal for the disting NT](https://github.com/ormermodular/shoal)—the original idea, musical algorithm, name and design—is by **Ormer Modular**. This is an **unofficial norns adaptation**, not an Ormer Modular release. The Lua musical core ports parts of their MIT-licensed C++ source; their copyright and licence are retained in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). The norns adaptation, interface and routing are maintained by [@giovannilami](https://github.com/giovannilami).
 
-This is a **community beta**. PolyPerc, MIDI, n.b., Grid interaction and pset save/recall have been exercised on a real norns. Some NT features and output edge cases remain unfinished; see [Known differences](#known-differences-and-limits).
+This is a **community beta**. PolyPerc, MIDI, n.b., Grid interaction, the basic LFO controls and pset save/recall have been exercised on a real norns. Long sessions, extreme rates and some output edge cases still need testing; see [Known differences](#known-differences-and-limits).
 
 ## Start playing
 
-1. Put the entire `shoal-norns` folder in `/home/we/dust/code/` on norns, or—once this repository is public—install it in Maiden with `;install https://github.com/giovannilami/shoal-norns`.
+1. Download this repository to your computer. For norns, make a `shoal-norns` folder in `/home/we/dust/code/` containing **`shoal-norns.lua`**, the complete **`lib/`** directory (including `shoal_mod.lua`), `LICENSE` and `THIRD_PARTY_NOTICES.md`. Leave `docs/` and `test/` on your computer; norns does not need them to run Shoal. A separately provided runtime-only ZIP contains exactly those device files. If an older Shoal folder exists on norns, first move it out of `dust/code`; do not merge versions.
 2. Select **SHOAL-NORNS** on norns. Track 1 plays the built-in PolyPerc engine immediately; Tracks 2–4 start with Output **Off** until you assign them.
 3. Turn **E1** to select a track. Turn **E2** for Rate and **E3** for Length. Press **K3** to arm a new seed; it lands at the next loop start. **K2** stops or starts playback.
 4. In **PARAMETERS → EDIT → TRACK 1–4**, choose an Output: PolyPerc, n.b., MIDI or crow. The Grid is optional.
 
-If the script does not appear in SELECT after copying it, restart norns. Do not upload a `.tar.gz` file *inside* the repository and expect Maiden to unpack it: the repository itself must contain `shoal-norns.lua`, `lib/` and `docs/` at its root. See the [publishing checklist](docs/PUBLISHING.md) for the remaining release steps.
+If the script does not appear in SELECT after copying it, restart norns. Development checks live in `test/` (singular), which norns excludes from SELECT; an old `tests/` (plural) directory can appear as extra scripts. Do not put a ZIP *inside* `dust/code/shoal-norns`; extract it on your computer first. A `SUPERCOLLIDER FAIL` accompanied by `Structure needs cleaning` or ext4 errors indicates a filesystem problem, not a Shoal Lua error; stop and check the microSD before retrying. See the [publishing checklist](docs/PUBLISHING.md) for the remaining release steps.
 
 ## The norns screen
 
 The overview is deliberately a *whole-pattern* view: each row shows every step of that track, whether its Length is 4, 16 or 64. A brighter outline follows the last visited step; short bars represent rests and taller bars suggest note height. The selected track is brighter.
 
-The top line reports the selected track, its current position/length, seed, Follow source when present and Direction. The four values to the right of each pattern are always **Rate · Length · Chance · Evolve**. The picture above is an explanatory drawing, not a screenshot of a running seed.
+The top line reports the selected track, its current position/length, seed, Follow source when present and Direction. The seed is always **0–999**; `S:419` means seed 419, not 5,419. The four values to the right of each pattern are always **Rate · Length · Chance · Evolve**. The picture above is an explanatory drawing, not a screenshot of a running seed.
 
 **Tide now follows the original Shoal behavior:** after each complete pass, pitches move one step against a fixed rhythm. Chance rests and Tie positions stay put, so bar heights can change at the same screen positions without a new seed. The rotation is non-destructive: with Evolve off, it realigns after `Length` passes, and switching to Forwards reads the original unrotated melody. See the [original Shoal manual](https://github.com/ormermodular/shoal/blob/main/docs/MANUAL.md).
 
@@ -51,11 +51,21 @@ The Grid has two pages, **SEQ** and **NOTE**, independent of the four norns scre
 | 5 | Direction | Minimum MIDI note |
 | 6 | Shift | Maximum MIDI note |
 | 7 | Follow | Spread |
-| 8 | T1–T4 · SEQ/NOTE · Fine · Freeze · Mutes · Random | Same actions |
+| 8 | T1–T4 · SEQ/NOTE · LFO · Freeze · Mutes · Random | Same actions |
 
-Tap a row to choose one of its discrete values. Important landmarks: **Rate ×1 and Chance 50% share column 8; Rate ×1.5 is column 11; Length 16 is column 9.** Hold **row 8, column 9** (Fine) and press left/right on a parameter row for ±1 instead. **Row 8, column 16** randomizes *all 14 Grid-editable parameters* of the selected track, across both Grid pages. It chooses values reachable from Grid keys, with two performance-friendly limits: **Rate stays between /4 and ×4, and Chance is at least 5%**. You can still set slower/faster rates or Chance 0% manually. Random does not alter Seed, Mute, Freeze or playback. K2 on norns remains Play/Stop.
+Tap a row to choose one of its discrete values. Important landmarks: **Rate ×1 and Chance 50% share column 8; Rate ×1.5 is column 11; Length 16 is column 9.** **Row 8, column 9** controls the LFO. The former Grid Fine function has been removed; use the norns encoders or parameter menu for exact values between Grid choices. **Row 8, column 16** randomizes *all 14 Grid-editable parameters* of the selected track, across both Grid pages. It chooses values reachable from Grid keys, with two performance-friendly limits: **Rate stays between /4 and ×4, and Chance is at least 5%**. You can still set slower/faster rates or Chance 0% manually. Random does not alter Seed, Mute, Freeze or playback. K2 on norns remains Play/Stop.
 
 The Grid intentionally does not duplicate the asynchronous sequencer display. For exact value ladders and the meaning of each control, see the [detailed guide](docs/DETAILED_GUIDE.md).
+
+### Clock-synced LFOs
+
+<img src="docs/lfo-flow.svg" alt="One clock-synced LFO per track controls several parameters, each with its own Grid range" width="780">
+
+There is **one LFO per track**. In **PARAMETERS → EDIT → LFO T1–T4**, switch it on, choose **Triangle**, **Random steps**, or **Sine**, and choose a cycle of **1, 2, 4 or 8 bars**. Then switch on any combination of Rate, Length, Chance, Shift, Note ±, Oct ± and Spread. They share the same movement, but each has its own range. Triangle goes low → high → low; Random steps holds one deterministic value for each full cycle; Sine moves smoothly through the range before snapping to available Grid values.
+
+On Grid, **tap row 8, column 9** to turn the selected track's LFO on or off. To set one target's range, **hold 8/9**, press its row at the first endpoint, press the same row at the second endpoint, then release 8/9. This also assigns that target to the LFO. You can set **several rows in one hold**; while still holding 8/9, press **8/6** or **8/7** to change Grid page and add targets there too. Alternatively, release 8/9 and hold it again for the next parameter; this does not switch the LFO off once you have touched a row. For example, on `SEQ`, hold 8/9 and press **8/3 then 16/3** to vary Chance from **50% to 100%**. On `NOTE`, use row 7 for Spread. Lit endpoints bracket the moving bright value. To remove just that assignment, repeat the **same two endpoints** while holding 8/9 (either order); the other LFO targets keep running. The same target can also be switched Off in its `LFO Tn` menu. Column 5 of the bottom row is again an empty separator.
+
+The menu and pset retain the manual/base values; the LFO only changes what plays. Turning the LFO or a target off restores its base value. Rate changes at beat boundaries without restarting the playhead; Length changes at the beginning of the next phrase, not halfway through one. Basic Grid/LFO operation has been tested on a real norns; extended sessions, very high rates, dynamic Length in non-linear Directions and recall of LFO ranges from psets still need hardware checks. [The detailed guide](docs/DETAILED_GUIDE.md#clock-synced-lfo) has the full behavior and examples.
 
 ## Sound and connections
 
@@ -70,7 +80,7 @@ Each track routes independently. Shoal itself needs no custom SuperCollider engi
 
 ## Saving and recalling
 
-Use norns' usual **PARAMETERS → PSET** menu. Psets save the script parameters, including seeds, routing and Grid-edited values. Saving and recalling a pset has been tested on hardware. Psets from an earlier development build with all 29 NT Rate options should have their Rate values checked: this norns build exposes `/32` through `×32`, not `/64` or `×64`, so old option numbers can refer to a neighbouring rate.
+Use norns' usual **PARAMETERS → PSET** menu. Psets save the script parameters, including seeds, routing, Grid-edited values and LFO settings/ranges. Saving and recalling a pset was tested on hardware before the LFO feature; recall of the new LFO ranges still needs a hardware check. Psets from an earlier development build with all 29 NT Rate options should have their Rate values checked: this norns build exposes `/32` through `×32`, not `/64` or `×64`, so old option numbers can refer to a neighbouring rate.
 
 ## Known differences and limits
 

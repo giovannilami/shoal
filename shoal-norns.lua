@@ -13,6 +13,7 @@ local Outputs = include("shoal-norns/lib/shoal_outputs")
 local Pitch = include("shoal-norns/lib/shoal_pitch")
 local UI = include("shoal-norns/lib/shoal_ui")
 local GridUI = include("shoal-norns/lib/shoal_grid")
+local Mod = include("shoal-norns/lib/shoal_mod")
 -- Prefer the same n.b. instance used by nbout when its mod is installed.
 -- A standalone dust/code/nb installation remains supported as a fallback.
 local nb_available, nb = pcall(require, "nbout/lib/nb/lib/nb")
@@ -30,6 +31,7 @@ local selected_track = 1
 local redraw_timer
 local redraw_pending = false
 local grid_ui
+local modulation
 local grid_feedback
 local grid_feedback_ticks = 0
 local key1_down = false
@@ -183,6 +185,7 @@ local function setup_params()
   params:set_action("shoal_reset", function()
     outputs:panic()
     sequencer:reset()
+    modulation:reset()
     redraw()
   end)
   params:add_trigger("shoal_reseed_all", "Reseed all")
@@ -267,6 +270,34 @@ local function setup_params()
     end)
     if nb_available then nb:add_param(track_id(track, "nb"), "n.b. voice") end
   end
+  for track = 1, TRACKS do
+    params:add_group("shoal_lfo_group_t" .. track, "LFO T" .. track,
+      3 + #Mod.TARGETS * 2)
+    local prefix = string.format("shoal_lfo_t%d_", track)
+    params:add_option(prefix .. "on", "Enabled", { "Off", "On" }, 1)
+    params:set_action(prefix .. "on", function()
+      modulation:config_changed(track)
+      redraw()
+    end)
+    params:add_option(prefix .. "shape", "Shape", Mod.SHAPES, 1)
+    params:set_action(prefix .. "shape", function() redraw() end)
+    params:add_option(prefix .. "period", "Period",
+      { "1 bar", "2 bars", "4 bars", "8 bars" }, 2)
+    params:set_action(prefix .. "period", function() redraw() end)
+    for _, item in ipairs(Mod.TARGETS) do
+      local target = item.id
+      params:add_option(prefix .. target, item.label, { "Off", "On" }, 1)
+      params:set_action(prefix .. target, function()
+        modulation:config_changed(track, target)
+        redraw()
+      end)
+      local range_id = prefix .. target .. "_range"
+      params:add_number(range_id, item.label .. " Grid range", 1, 256,
+        Mod.range_pack(item.first, item.last))
+      params:hide(range_id)
+      params:set_action(range_id, function() redraw() end)
+    end
+  end
   if nb_available then
     params:add_separator("shoal_nb_sound", "N.B. SOUND")
     nb:add_player_params()
@@ -275,6 +306,7 @@ end
 
 function init()
   core = Core.new()
+  modulation = Mod.new(core, params, pitch_windows, GridUI, TRACKS)
   if nb_available then nb:init() end
 
   outputs = Outputs.new({
@@ -297,7 +329,19 @@ function init()
     outputs:step(routed, step_beats, track.gate, 100)
     -- Every clocked position, including a rest or muted step, moves the cursor.
     redraw_pending = true
-  end, clock, TRACKS)
+    if grid_ui and modulation:enabled(event.track) then grid_ui:mark_dirty() end
+  end, clock, TRACKS, {
+    before_tick = function(beat)
+      if modulation:before_tick(beat) then
+        redraw_pending = true
+        if grid_ui then grid_ui:mark_dirty() end
+      end
+    end,
+    before_step = function(track, beat) modulation:before_step(track, beat) end,
+    after_step = function(track, event, beat)
+      modulation:after_step(track, event, beat)
+    end,
+  })
 
   setup_params()
   if grid and grid.connect then
@@ -311,6 +355,7 @@ function init()
         redraw()
       end,
       feedback = show_grid_feedback,
+      mod = modulation,
     })
     grid_ui:connect()
   end
