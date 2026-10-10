@@ -22,6 +22,6 @@ Install from Maiden after the repository is public:
 ;install https://github.com/giovannilami/shoal-norns
 ```
 
-The original Shoal concept and musical algorithm are Ormer Modular's; their MIT notice is included in the repository. Tide and some output details deliberately differ from the NT version, and the README explains these boundaries. Feedback and test reports—especially for crow and different n.b. voices—are very welcome.
+The original Shoal concept and musical algorithm are Ormer Modular's; their MIT notice is included in the repository. Tide follows the NT pitch-over-fixed-rhythm behavior; some output details still differ, and the README explains these boundaries. Feedback and test reports—especially for crow and different n.b. voices—are very welcome.
 
 <!-- Optional before posting: add your public author/lines handle and a real photo or video. -->

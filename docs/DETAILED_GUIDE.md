@@ -73,7 +73,7 @@ Shift is not a transient pitch change. It rotates which seeded pattern step is l
 
 Shift uses **steps**, not percent: the suggested −90…+90 numbers cannot be entered literally because Shoal's Shift range is −63…+63 steps. The Grid therefore offers musically useful offsets up to ±12; the Norns parameter menu and Grid Fine key retain access to every integer in the full range. With an exactly 16-step pattern, ±16 would reproduce the same order and is deliberately absent from the coarse Grid keys.
 
-Direction `Tide` on this Norns version moves the **whole phrase** by one step on each complete pass: notes, rests and Tie decisions move together, and the bar heights on the screen move without being recalculated into a different melody when Evolve is zero. This is an intentional adaptation requested after hardware testing. **The disting NT original behaves differently:** it anchors the rhythm while rotating pitch alone, so the audible notes against fixed rests can change. `Shuffle` visits every step once per pass in a new seeded order. Entering Shuffle while running, changing Length during Shuffle, and returning to Shuffle after another direction all initialise its order safely.
+Direction `Tide` matches the disting NT original: Chance rests and Tie decisions remain attached to their rhythmic steps, while the pitch lookup moves forward by one step on each complete pass. The screen therefore keeps rests at the same positions while note-bar heights may change there; a pitch previously hidden behind a rest may become audible on another pass. With Evolve off and unchanged parameters, Tide is non-destructive: it realigns after `Length` passes, and Forwards reads the unrotated seed melody. Evolve and reseeding change the underlying material independently. `Shuffle` visits every step once per pass in a new seeded order. Entering Shuffle while running, changing Length during Shuffle, and returning to Shuffle after another direction all initialise its order safely.
 
 Each track now has `Min note`, `Max note`, and `Spread %` in its group. Spread 100% preserves Shoal's note (subject to the chosen range), 0% contracts toward the global Root, and up to 200% expands away from it. The result is snapped to the chosen scale inside the hard range when possible. This is an optional, deterministic output transform; it does not change the Shoal core, seed, direction, or pattern evolution. Defaults 0–127 and 100% retain the previous output. If Min is raised above Max, Max follows it, and vice versa.
 
@@ -98,7 +98,7 @@ The following are direct ports of the C++ logic:
 
 - hash, scale tables, stable-degree selection, melody evaluation, Chance/Tie rolls;
 - Note/Oct variation, Weight, transpose, octave folding, and bar height;
-- direction walks other than Tide, and their shared runtime RNG; Norns Tide intentionally shifts the whole phrase instead of the original's pitch-only stream;
+- all direction walks, including Tide's pitch-only rotation against fixed Chance/Tie steps, and their shared runtime RNG;
 - linked follow, including source seed and source evolution epochs;
 - Evolve, Breathe, Shift, Freeze, reseed-at-origin, and reseed-all scattering;
 - rate tables and per-master-tick advance counts.
@@ -145,7 +145,7 @@ With Lua 5.3 on the path:
 ./tests/run.sh
 ```
 
-`tests/test_core.lua` checks golden hash/melody vectors, rate arithmetic, direction walks, follow, evolve, reseed, and freeze; it also verifies that Norns Tide shifts notes, rests and ties together. `tests/test_grid.lua` checks the two 16 × 8 Grid pages, their exact key values, Random and the other permanent bottom-row actions. `tests/test_runtime.lua` checks scheduling, outputs, live Shuffle, entry-point startup and Grid interaction with a simulated Norns runtime. `tests/test_ui.lua` checks the 64-column display, moving cursor and the unchanged bar heights as Tide rotates the complete pattern. `tests/test_nb_integration.lua` checks the nbout-compatible n.b. branch. `tests/upstream_reference.cpp` is an independent C++ oracle for the lowest-level golden values. The original source remains the reference except for the documented Norns adaptations.
+`tests/test_core.lua` checks golden hash/melody vectors, rate arithmetic, direction walks, follow, evolve, reseed, and freeze; it also verifies that Tide keeps rests/Tie fixed, rotates pitch, and returns to the initial alignment. `tests/test_grid.lua` checks the two 16 × 8 Grid pages, their exact key values, Random and the other permanent bottom-row actions. `tests/test_runtime.lua` checks scheduling, outputs, live Shuffle, entry-point startup and Grid interaction with a simulated Norns runtime. `tests/test_ui.lua` checks the 64-column display, moving cursor and Tide's changing pitch heights over fixed rests. `tests/test_nb_integration.lua` checks the nbout-compatible n.b. branch. `tests/upstream_reference.cpp` is an independent C++ oracle for the lowest-level golden values. The original source remains the reference except for the documented Norns adaptations.
 
 ## Layout
 
