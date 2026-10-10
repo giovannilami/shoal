@@ -42,6 +42,7 @@ local connected = {
 }
 local selected = 1
 local random_calls = 0
+local random_first = false
 local ui = GridUI.new({
   params = parameters,
   grid = { connect = function() return connected end },
@@ -50,6 +51,7 @@ local ui = GridUI.new({
   feedback = function(message) notices[#notices + 1] = message end,
   random = function(count)
     random_calls = random_calls + 1
+    if random_first then return 1 end
     return random_calls == 13 and 8 or count
   end,
 })
@@ -171,7 +173,7 @@ values.shoal_t4_seed = 42
 local other_rate = values.shoal_t1_rate
 connected.key(16, 8, 1)
 equal(random_calls, 14, "Random visits both pages' fourteen parameters")
-equal(values.shoal_t4_rate, 26, "Random Rate comes from a Grid key")
+equal(values.shoal_t4_rate, 20, "Random Rate tops out at x4")
 equal(values.shoal_t4_length, 64, "Random Length comes from a Grid key")
 equal(values.shoal_t4_chance, 100, "Random Chance comes from a Grid key")
 equal(values.shoal_t4_direction, 15, "Random Direction comes from a Grid key")
@@ -190,6 +192,10 @@ values.shoal_t2_source = 5
 values.shoal_t3_source = 5
 connected.key(16, 8, 1)
 equal(values.shoal_t4_source, 1, "Random Follow falls back to Off when every target cycles")
+random_first = true
+connected.key(16, 8, 1)
+equal(values.shoal_t4_rate, 8, "Random Rate starts at /4")
+equal(values.shoal_t4_chance, 5, "Random Chance starts at 5%, not silence")
 ui:redraw_if_dirty()
 equal(led["15:8"], 15, "mute status shown")
 equal(led["10:8"], 15, "freeze status shown")
