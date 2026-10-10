@@ -4,7 +4,7 @@
 
 Four generative melodies for **norns**, with an optional **16 × 8 Grid** performance editor. Each track grows a repeatable pattern from a seed, then lets you reshape how it moves, changes and sounds. The norns screen shows all four complete patterns and their moving playheads; Grid is for hands-on parameter changes, not a second step sequencer.
 
-> **Credit first:** [Shoal for the disting NT](https://github.com/ormermodular/shoal)—the original idea, musical algorithm, name and design—is by **Ormer Modular**. This is an **unofficial norns adaptation**, not an Ormer Modular release. The Lua musical core ports parts of their MIT-licensed C++ source; their copyright and licence are retained in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). The norns adaptation, interface and routing are maintained by [@giovannilami](https://github.com/giovannilami).
+> **Credit first:** [Shoal for the disting NT](https://github.com/ormermodular/shoal), the original idea, musical algorithm, name and design, is by **Ormer Modular**. This is an **unofficial norns adaptation**, not an Ormer Modular release. The Lua musical core ports parts of their MIT-licensed C++ source; their copyright and licence are retained in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). The norns adaptation, interface and routing are maintained by [@giovannilami](https://github.com/giovannilami).
 
 This is a **community beta**. PolyPerc, MIDI, n.b., Grid interaction, the basic LFO controls and pset save/recall have been exercised on a real norns. Long sessions, extreme rates and some output edge cases still need testing; see [Known differences](#known-differences-and-limits).
 
