@@ -23,6 +23,8 @@ The overview is deliberately a *whole-pattern* view: each row shows every step o
 
 The top line reports the selected track, its current position/length, seed, Follow source when present and Direction. The four values to the right of each pattern are always **Rate · Length · Chance · Evolve**. The picture above is an explanatory drawing, not a screenshot of a running seed.
 
+**Tide now follows the original Shoal behavior:** after each complete pass, pitches move one step against a fixed rhythm. Chance rests and Tie positions stay put, so bar heights can change at the same screen positions without a new seed. The rotation is non-destructive: with Evolve off, it realigns after `Length` passes, and switching to Forwards reads the original unrotated melody. See the [original Shoal manual](https://github.com/ormermodular/shoal/blob/main/docs/MANUAL.md).
+
 | On norns | Action |
 | --- | --- |
 | E1 | Select track 1–4 on any page |
@@ -73,7 +75,6 @@ Use norns' usual **PARAMETERS → PSET** menu. Psets save the script parameters,
 ## Known differences and limits
 
 - The reference core preserves Shoal's eight-track, 29-rate tables for source comparison. The playable norns instrument uses **four tracks** and **27 selectable rates** (`/32` to `×32`).
-- **Tide** intentionally rotates the *whole phrase*—notes, rests and ties—one step per pass. On the NT original it rotates pitch against fixed rhythm. This adaptation follows hardware feedback from this norns port.
 - **Shift** is an offset in *steps*, not a pitch transpose. The Grid offers selected values up to ±12; the norns parameter menu offers the full ±63. Use Transpose or Octave for pitch changes.
 - **Min/Max note and Spread** are norns-only output-pitch controls. They do not change the seed or the reference musical core.
 - NT-specific Current CV, Slop timing and exact gate/EOS pulse behavior are not implemented here. Tie handling, very high rates and crow timing need more hardware testing. PolyPerc is percussive, so Freeze cannot sustain it like a held MIDI or n.b. note.
