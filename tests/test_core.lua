@@ -125,16 +125,39 @@ for _ = 1, 5 do tide:advance(1) end
 local tide_turn = tide:advance(1)
 equal(tide_turn.step0, 0, "tide returns to walk origin")
 equal(tide_turn.pitch_step0, 1, "tide rotates pitch stream")
-equal(tide_turn.lookup_step0, 1, "tide rotates rhythm with pitch")
+equal(tide_turn.lookup_step0, 0, "tide keeps rhythm at walk origin")
 
--- With Evolve off, every Tide pass must be the same full musical pattern
--- shifted by one position: not a new selection of pitches over old rests.
+-- Independent host C++ fixture from tests/upstream_reference.cpp. Each entry
+-- is rhythm step : pitch step : fires : tie : MIDI note over three passes.
+local tide_golden = Core.new({ scale = "major" })
+tide_golden:set_track(1, "length", 5)
+tide_golden:set_track(1, "direction", "tide")
+tide_golden:set_track(1, "chance", 58)
+tide_golden:set_track(1, "tie", 43)
+local tide_events = {}
+for tick = 1, 15 do
+  local event = tide_golden:advance(1)
+  tide_events[tick] = string.format("%d:%d:%d:%d:%d", event.lookup_step0,
+    event.pitch_step0, event.fires and 1 or 0, event.tie and 1 or 0, event.note)
+end
+equal(table.concat(tide_events, ","), table.concat({
+  "0:0:1:0:47,1:1:1:1:55,2:2:0:1:0,3:3:0:1:0,4:4:0:0:0",
+  "0:1:1:0:55,1:2:1:1:47,2:3:0:1:0,3:4:0:1:0,4:0:0:0:0",
+  "0:2:1:0:47,1:3:1:1:50,2:4:0:1:0,3:0:0:1:0,4:1:0:0:0",
+}, ","), "upstream C++ Tide fixture")
+
+-- NT Tide reads the same rhythm and Tie positions every pass, while its pitch
+-- lookup advances. A pitch hidden by a rest can sound on a later pass.
 local tide_pattern = Core.new()
 tide_pattern:set_track(1, "length", 11)
 tide_pattern:set_track(1, "direction", "tide")
 tide_pattern:set_track(1, "chance", 58)
 tide_pattern:set_track(1, "tie", 43)
 tide_pattern:set_track(1, "note", 37)
+local pitch_reference = Core.new()
+pitch_reference:set_track(1, "length", 11)
+pitch_reference:set_track(1, "chance", 100)
+pitch_reference:set_track(1, "note", 37)
 local passes = { {}, {} }
 for pass = 1, 2 do
   for position = 1, 11 do
@@ -142,18 +165,38 @@ for pass = 1, 2 do
     passes[pass][position] = event
   end
 end
+local changed_notes = 0
 for position = 1, 11 do
-  local source = passes[1][position % 11 + 1]
+  local source = passes[1][position]
   local shifted = passes[2][position]
   equal(shifted.lookup_step0, source.lookup_step0,
-    "Tide shifts full lookup at position " .. position)
+    "Tide anchors rhythm at position " .. position)
+  equal(shifted.pitch_step0, position % 11,
+    "Tide advances pitch at position " .. position)
   equal(shifted.fires, source.fires,
-    "Tide shifts rests at position " .. position)
+    "Tide preserves rests at position " .. position)
   equal(shifted.tie, source.tie,
-    "Tide shifts ties at position " .. position)
-  equal(shifted.note, source.note,
-    "Tide preserves notes at position " .. position)
+    "Tide preserves ties at position " .. position)
+  if shifted.fires then
+    equal(shifted.note, pitch_reference:evaluate(1, position % 11).note,
+      "Tide reads rotated pitch at position " .. position)
+    if shifted.note ~= source.note then changed_notes = changed_notes + 1 end
+  end
 end
+equal(changed_notes > 0, true, "Tide changes audible pitches over fixed rests")
+for _ = 1, 99 do tide_pattern:advance(1) end
+local restored = tide_pattern:advance(1)
+equal(tide_pattern.tracks[1].rot, 0, "Tide realigns after Length passes")
+for position = 1, 11 do
+  local event = position == 1 and restored or tide_pattern:advance(1)
+  equal(event.fires, passes[1][position].fires,
+    "Tide restores rhythm at position " .. position)
+  equal(event.note, passes[1][position].note,
+    "Tide restores pitch at position " .. position)
+end
+tide_pattern:set_track(1, "direction", "forwards")
+equal(tide_pattern:evaluate(1, 0).note, passes[1][1].note,
+  "Forwards recovers the unrotated melody without reseeding")
 
 local follow = Core.new({ scale = "minor pentatonic" })
 follow:set_track(1, "seed", 222, true)

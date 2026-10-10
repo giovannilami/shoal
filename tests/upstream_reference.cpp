@@ -81,6 +81,23 @@ static void printMelody(const char* label, const EvalConfig& cfg) {
   putchar('\n');
 }
 
+// Shoal's Tide keeps Chance/Tie on the rhythm step and rotates only pitch.
+// This fixture deliberately includes rests, so the two streams cannot be
+// mistaken for a whole-event rotation.
+static void printTide(const EvalConfig& cfg) {
+  printf("tide=");
+  for (int tick = 0; tick < 15; ++tick) {
+    int step = tick % 5;
+    int pitchStep = (step + tick / 5) % 5;
+    int fires = hash3(cfg.seed, (uint32_t)step, 0xF17Eu) % 100 < 58;
+    int tie = hash3(cfg.seed, (uint32_t)step, 0x071Eu) % 100 < 43;
+    int note = fires ? evaluate(cfg, pitchStep) : 0;
+    printf("%s%d:%d:%d:%d:%d", tick ? "," : "",
+      step, pitchStep, fires, tie, note);
+  }
+  putchar('\n');
+}
+
 struct Walk {
   int pos, dir, phase, pass, poolStart, poolLen, poolPos, dwell;
   uint32_t seed;
@@ -193,6 +210,7 @@ int main() {
   EvalConfig variation = { 347, 60, 47, -63, 38, -1, 2, dorian, 7 };
   printMelody("major", defaults);
   printMelody("variation", variation);
+  printTide(defaults);
 
   const char* names[] = { "forwards", "reverse", "pendulum", "random", "drunk",
     "pong", "tide", "shuffle", "pools", "stride", "gravity", "converge",

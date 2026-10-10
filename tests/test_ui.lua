@@ -248,9 +248,18 @@ for _ = 1, 11 do tide_ui:advance(1) end
 local second_tide_bars = tide_bar_heights()
 equal(#first_tide_bars, 11, "first Tide pass draws every step")
 equal(#second_tide_bars, 11, "second Tide pass draws every step")
+local changed_tide_bars = 0
 for position = 1, 11 do
-  equal(second_tide_bars[position], first_tide_bars[position % 11 + 1],
-    "Tide bar height shifts without changing at position " .. position)
+  if not tide_ui:evaluate(1, position - 1).fires then
+    equal(first_tide_bars[position], 1,
+      "Tide first pass shows a fixed rest at position " .. position)
+    equal(second_tide_bars[position], 1,
+      "Tide second pass keeps the rest at position " .. position)
+  elseif second_tide_bars[position] ~= first_tide_bars[position] then
+    changed_tide_bars = changed_tide_bars + 1
+  end
 end
+equal(changed_tide_bars > 0, true,
+  "Tide preview changes pitch heights over fixed rhythm")
 
 print(string.format("ok - %d UI assertions", checks))
