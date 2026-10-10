@@ -10,7 +10,7 @@ This is a **community beta**. PolyPerc, MIDI, n.b., Grid interaction and pset sa
 
 ## Start playing
 
-1. Put the entire `shoal-norns` folder in `/home/we/dust/code/` on norns, or install it in Maiden with `;install https://github.com/giovannilami/shoal-norns`.
+1. Put the entire `shoal-norns` folder in `/home/we/dust/code/` on norns, or—once this repository is public—install it in Maiden with `;install https://github.com/giovannilami/shoal-norns`.
 2. Select **SHOAL-NORNS** on norns. Track 1 plays the built-in PolyPerc engine immediately; Tracks 2–4 start with Output **Off** until you assign them.
 3. Turn **E1** to select a track. Turn **E2** for Rate and **E3** for Length. Press **K3** to arm a new seed; it lands at the next loop start. **K2** stops or starts playback.
 4. In **PARAMETERS → EDIT → TRACK 1–4**, choose an Output: PolyPerc, n.b., MIDI or crow. The Grid is optional.
@@ -53,7 +53,7 @@ The Grid has two pages, **SEQ** and **NOTE**, independent of the four norns scre
 | 7 | Follow | Spread |
 | 8 | T1–T4 · SEQ/NOTE · Fine · Freeze · Mutes · Random | Same actions |
 
-Tap a row to choose one of its discrete values. Important landmarks: **Rate ×1 and Chance 50% share column 8; Rate ×1.5 is column 11; Length 16 is column 9.** Hold **row 8, column 9** (Fine) and press left/right on a parameter row for ±1 instead. **Row 8, column 16** randomizes *all 14 Grid-editable parameters* of the selected track, across both Grid pages, from the values those rows can select. It does not alter Seed, Mute, Freeze or playback. K2 on norns remains Play/Stop. Random Chance can be 0%, so a silent result is possible.
+Tap a row to choose one of its discrete values. Important landmarks: **Rate ×1 and Chance 50% share column 8; Rate ×1.5 is column 11; Length 16 is column 9.** Hold **row 8, column 9** (Fine) and press left/right on a parameter row for ±1 instead. **Row 8, column 16** randomizes *all 14 Grid-editable parameters* of the selected track, across both Grid pages. It chooses values reachable from Grid keys, with two performance-friendly limits: **Rate stays between /4 and ×4, and Chance is at least 5%**. You can still set slower/faster rates or Chance 0% manually. Random does not alter Seed, Mute, Freeze or playback. K2 on norns remains Play/Stop.
 
 The Grid intentionally does not duplicate the asynchronous sequencer display. For exact value ladders and the meaning of each control, see the [detailed guide](docs/DETAILED_GUIDE.md).
 
@@ -86,4 +86,4 @@ See [detailed behavior, fidelity notes and test instructions](docs/DETAILED_GUID
 
 **Original Shoal:** [Ormer Modular](https://github.com/ormermodular/shoal), for the Expert Sleepers disting NT. Their original [manual](https://github.com/ormermodular/shoal/blob/main/docs/MANUAL.md) is the primary reference. **norns adaptation:** [@giovannilami](https://github.com/giovannilami), with its own interface and output routing. The original author deserves the primary credit for the musical concept and algorithm.
 
-The norns-specific code is offered under the [MIT licence](LICENSE); the original Ormer Modular MIT notice is reproduced in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). Contributions and bug reports are welcome via GitHub; a lines thread is planned. This project is not affiliated with or endorsed by Ormer Modular, Expert Sleepers or monome.
+The norns-specific code is offered under the [MIT licence](LICENSE); the original Ormer Modular MIT notice is reproduced in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). Contributions and bug reports are welcome once the public repository and lines thread exist. This project is not affiliated with or endorsed by Ormer Modular, Expert Sleepers or monome.
