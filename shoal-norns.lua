@@ -1,6 +1,11 @@
--- shoal-norns: four generative melodies on norns
--- v0.1.0 @giovannilami; adapted from Shoal by Ormer Modular
--- K2 play/stop, K3 reseed, E1 track, E2 rate, E3 length
+-- shoal-norns v0.1.0
+-- 4 generative tracks
+-- port: @giovannilami
+-- Shoal: Ormer Modular
+-- K2 play / stop
+-- K3 new seed
+-- E1 track  E2 rate
+-- E3 length
 
 local Core = include("shoal-norns/lib/shoal_core")
 local ShoalClock = include("shoal-norns/lib/shoal_clock")
