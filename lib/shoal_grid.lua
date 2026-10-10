@@ -4,6 +4,10 @@
 local GridUI = {}
 GridUI.__index = GridUI
 
+-- Norns Rate option numbers (and Core.RATES indexes): /4 through x4.
+local RANDOM_RATE_MIN, RANDOM_RATE_MAX = 8, 20
+local RANDOM_CHANCE_MIN = 5
+
 GridUI.PAGES = {
   {
     title = "SEQ",
@@ -81,6 +85,23 @@ local function selectable_values(field)
     end
   end
   return choices
+end
+
+-- Performance Random uses a narrower range than manual Grid editing. Keep
+-- the full key ladders available when the musician chooses a value directly.
+local function random_choices(field)
+  local choices = selectable_values(field)
+  if field.id ~= "rate" and field.id ~= "chance" then return choices end
+
+  local bounded = {}
+  for _, value in ipairs(choices) do
+    if (field.id == "rate"
+          and value >= RANDOM_RATE_MIN and value <= RANDOM_RATE_MAX)
+        or (field.id == "chance" and value >= RANDOM_CHANCE_MIN) then
+      bounded[#bounded + 1] = value
+    end
+  end
+  return bounded
 end
 
 local function value_to_column(field, value)
@@ -188,7 +209,7 @@ function GridUI:_randomize_track()
   local chosen = {}
   for _, page in ipairs(GridUI.PAGES) do
     for _, field in ipairs(page) do
-      local choices = selectable_values(field)
+      local choices = random_choices(field)
       if field.id == "source" then
         local safe = {}
         for _, value in ipairs(choices) do
