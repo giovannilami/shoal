@@ -23,7 +23,7 @@ The overview is deliberately a *whole-pattern* view: each row shows every step o
 
 The top line reports the selected track, its current position/length, seed, Follow source when present and Direction. The seed is always **0–999**; `S:419` means seed 419, not 5,419. The four values to the right of each pattern are always **Rate · Length · Chance · Evolve**. The picture above is an explanatory drawing, not a screenshot of a running seed.
 
-**Tide now follows the original Shoal behavior:** after each complete pass, pitches move one step against a fixed rhythm. Chance rests and Tie positions stay put, so bar heights can change at the same screen positions without a new seed. The rotation is non-destructive: with Evolve off, it realigns after `Length` passes, and switching to Forwards reads the original unrotated melody. See the [original Shoal manual](https://github.com/ormermodular/shoal/blob/main/docs/MANUAL.md).
+**Tide follows the original Shoal behavior:** after each complete pass, pitches move one step against a fixed rhythm. Chance rests and Tie positions stay put, so bar heights can change at the same screen positions without a new seed. The rotation is non-destructive: with Evolve off, it realigns after `Length` passes, and switching to Forwards reads the original unrotated melody. See the [original Shoal manual](https://github.com/ormermodular/shoal/blob/main/docs/MANUAL.md).
 
 | On norns | Action |
 | --- | --- |
