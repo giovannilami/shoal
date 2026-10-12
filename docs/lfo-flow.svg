@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="780" height="340" viewBox="0 0 780 340" role="img" aria-labelledby="title desc">
   <title id="title">One LFO, several independent parameter ranges</title>
-  <desc id="desc">The selected track has one clock-synced LFO with a shared shape and period. It can drive Chance, Shift and Spread simultaneously, each inside its own Grid-defined range. Hold Grid key 8/9 and choose two endpoints to assign a target.</desc>
+  <desc id="desc">Example configuration: one clock-synced LFO on Track 1 drives Chance, Shift and Spread simultaneously. All three connections have arrows. Each target has its own Grid-defined range; other parameter combinations are possible. Hold Grid key 8/9 and choose two endpoints to assign a target.</desc>
   <defs>
     <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
       <path d="M0 0 L10 5 L0 10 Z" fill="#8fd4cb"/>
@@ -8,7 +8,7 @@
   </defs>
   <rect width="780" height="340" rx="18" fill="#0c1720"/>
   <text x="26" y="38" fill="#9ee1d4" font-family="monospace" font-size="18" letter-spacing="1.5">ONE LFO PER TRACK</text>
-  <text x="26" y="60" fill="#a8c9c7" font-family="sans-serif" font-size="13">One moving phase; independent endpoints for each assigned parameter.</text>
+  <text x="26" y="60" fill="#a8c9c7" font-family="sans-serif" font-size="13">Example configuration: one moving phase, three independently ranged targets.</text>
 
   <rect x="26" y="83" width="220" height="167" rx="12" fill="#18313a" stroke="#4f9294" stroke-width="1.5"/>
   <text x="43" y="111" fill="#f4d786" font-family="monospace" font-size="16">TRACK 1  /  LFO</text>
@@ -17,7 +17,10 @@
   <path d="M45 216 L78 185 L111 216 L144 185 L177 216 L210 185" fill="none" stroke="#f4d786" stroke-width="3" stroke-linejoin="round"/>
   <text x="43" y="238" fill="#8fb8b8" font-family="sans-serif" font-size="11">Shared motion, synced to norns clock</text>
 
-  <path d="M246 166 H280 V116 H313 M280 166 H313 M280 166 V216 H313" fill="none" stroke="#8fd4cb" stroke-width="2" marker-end="url(#arrow)"/>
+  <path d="M246 166 H280" fill="none" stroke="#8fd4cb" stroke-width="2"/>
+  <path d="M280 166 V116 H313" fill="none" stroke="#8fd4cb" stroke-width="2" marker-end="url(#arrow)"/>
+  <path d="M280 166 V178 H313" fill="none" stroke="#8fd4cb" stroke-width="2" marker-end="url(#arrow)"/>
+  <path d="M280 166 V240 H313" fill="none" stroke="#8fd4cb" stroke-width="2" marker-end="url(#arrow)"/>
   <g font-family="monospace" font-size="15">
     <rect x="317" y="88" width="437" height="56" rx="9" fill="#20383d" stroke="#467a78"/>
     <text x="333" y="112" fill="#e8f2ed">SEQ / CHANCE</text>
