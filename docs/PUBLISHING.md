@@ -6,7 +6,7 @@ Nothing in this repository publishes itself. The maintainer decides when and whe
 
 1. The README and script preview credit the GitHub handle `@giovannilami`. Review this attribution before each release.
 2. Review [README.md](../README.md), [LICENSE](../LICENSE) and [THIRD_PARTY_NOTICES.md](../THIRD_PARTY_NOTICES.md). The original Shoal concept and adapted musical core belong in the Ormer Modular credit; the norns UI/routing work belongs to this port.
-3. Run `./test/run.sh` with Lua 5.3. The singular `test/` name keeps these development files out of the norns SELECT menu. Test on norns once more with PolyPerc, MIDI, pset save/recall and, if available, 16 × 8 Grid. Crow remains marked unverified unless you test it.
+3. Run `sh test/run.sh` with Lua 5.3. The singular `test/` name keeps these development files out of the norns SELECT menu. Test on norns once more with PolyPerc, MIDI, pset save/recall and, if available, 16 × 8 Grid. Crow remains marked unverified unless you test it.
 4. Check that no personal psets, MIDI maps, recordings, logs or account details were added to the folder. This repository intentionally contains source and documentation only.
 
 ## GitHub repository check

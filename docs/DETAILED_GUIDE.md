@@ -247,7 +247,7 @@ core:set_track(1, "seed", 500) -- normal edit: armed until loop origin
 With Lua 5.3 on the path:
 
 ```sh
-./test/run.sh
+sh test/run.sh
 ```
 
 `test/test_core.lua` checks golden hash/melody vectors, rate arithmetic, direction walks, follow, evolve, reseed, and freeze; it also verifies that Tide keeps rests/Tie fixed, rotates pitch, and returns to the initial alignment. `test/test_grid.lua` checks the two 16 × 8 Grid pages, their exact key values, Random and the other permanent bottom-row actions. `test/test_mod.lua` checks multi-target LFO assignments, discrete ranges and restoring manual values. `test/test_runtime.lua` checks scheduling, outputs, live Shuffle, entry-point startup and Grid interaction with a simulated Norns runtime. `test/test_stress.lua` exercises all 15 Directions with changing parameters and then four tracks at ×32. `test/test_ui.lua` checks the 64-column display, moving cursor and Tide's changing pitch heights over fixed rests. `test/test_nb_integration.lua` checks the nbout-compatible n.b. branch. `test/upstream_reference.cpp` is an independent C++ oracle for the lowest-level golden values. The original source remains the reference except for the documented Norns adaptations. Offline tests cannot measure SuperCollider CPU usage or the microSD's health.
