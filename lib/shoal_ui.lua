@@ -2,8 +2,8 @@
 -- The overview always shows every step of each track. The bright column is
 -- the last position actually visited by Core:advance, including silent steps.
 
-local Pitch = include("shoal-norns/lib/shoal_pitch")
-local Font = include("shoal-norns/lib/shoal_font")
+local Pitch = include("shoal/lib/shoal_pitch")
+local Font = include("shoal/lib/shoal_font")
 local UI = {}
 
 -- The header names the selected track, freeing the left edge for all 64
