@@ -81,7 +81,7 @@ include = function(path)
   return dofile(root .. "/" .. path:match("(lib/.+)$") .. ".lua")
 end
 
-dofile(root .. "/shoal-norns.lua")
+dofile(root .. "/shoal.lua")
 init()
 equal(engine.name, "PolyPerc", "PolyPerc survives loading the n.b. library")
 equal(nb_init, 1, "shared nbout library initialized")

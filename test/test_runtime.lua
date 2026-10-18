@@ -15,7 +15,7 @@ local function equal(actual, expected, label)
 end
 
 -- Norns PREVIEW does not wrap text: the leading comments are literal rows.
-local script_file = assert(io.open(root .. "/shoal-norns.lua", "r"))
+local script_file = assert(io.open(root .. "/shoal.lua", "r"))
 local preview_lines = {}
 for line in script_file:lines() do
   if not line:match("^%-%- ") then break end
@@ -263,7 +263,7 @@ include = function(path)
   return dofile(root .. "/" .. path:match("(lib/.+)$") .. ".lua")
 end
 
-dofile(root .. "/shoal-norns.lua")
+dofile(root .. "/shoal.lua")
 init()
 equal(engine.name, "PolyPerc", "playable engine selected")
 redraw_instance.event()

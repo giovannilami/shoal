@@ -5,7 +5,7 @@ local Core = require("shoal_core")
 include = function(path)
   return dofile(root .. "/" .. path:match("(lib/.+)$") .. ".lua")
 end
-local UI = include("shoal-norns/lib/shoal_ui")
+local UI = include("shoal/lib/shoal_ui")
 local checks = 0
 
 local function equal(actual, expected, label)

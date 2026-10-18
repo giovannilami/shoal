@@ -13,7 +13,7 @@ local Outputs = require("shoal_outputs")
 include = function(path)
   return dofile(root .. "/" .. path:match("(lib/.+)$") .. ".lua")
 end
-local UI = include("shoal-norns/lib/shoal_ui")
+local UI = include("shoal/lib/shoal_ui")
 
 local core, values, windows = Core.new(), {}, {}
 for track = 1, 4 do
