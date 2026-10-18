@@ -1,4 +1,4 @@
-# shoal-norns
+# shoal
 
 ![Illustrated overview of four independent Shoal tracks on the norns screen](docs/overview.svg)
 
@@ -10,12 +10,14 @@ This is a **community beta**. PolyPerc, MIDI, n.b., Grid interaction, the basic 
 
 ## Start playing
 
-1. Download this repository to your computer. For norns, make a `shoal-norns` folder in `/home/we/dust/code/` containing **`shoal-norns.lua`**, the complete **`lib/`** directory (including `shoal_mod.lua`), `LICENSE` and `THIRD_PARTY_NOTICES.md`. Leave `docs/` and `test/` on your computer; norns does not need them to run Shoal. A separately provided runtime-only ZIP contains exactly those device files. If an older Shoal folder exists on norns, first move it out of `dust/code`; do not merge versions.
-2. Select **SHOAL-NORNS** on norns. Track 1 plays the built-in PolyPerc engine immediately; Tracks 2–4 start with Output **Off** until you assign them.
+1. Download this repository to your computer. For norns, make a `shoal` folder in `/home/we/dust/code/` containing **`shoal.lua`**, the complete **`lib/`** directory (including `shoal_mod.lua`), `LICENSE` and `THIRD_PARTY_NOTICES.md`. Leave `docs/` and `test/` on your computer; norns does not need them to run Shoal. If an older `shoal-norns` installation exists, first move it out of `dust/code`; do not merge versions or leave both scripts in SELECT.
+2. Select **SHOAL** on norns. Track 1 plays the built-in PolyPerc engine immediately; Tracks 2–4 start with Output **Off** until you assign them.
 3. Turn **E1** to select a track. Turn **E2** for Rate and **E3** for Length. Press **K3** to arm a new seed; it lands at the next loop start. **K2** stops or starts playback.
 4. In **PARAMETERS → EDIT → TRACK 1–4**, choose an Output: PolyPerc, n.b., MIDI or crow. The Grid is optional.
 
-If the script does not appear in SELECT after copying it, restart norns. Development checks live in `test/` (singular), which norns excludes from SELECT; an old `tests/` (plural) directory can appear as extra scripts. Do not put a ZIP *inside* `dust/code/shoal-norns`; extract it on your computer first. A `SUPERCOLLIDER FAIL` accompanied by `Structure needs cleaning` or ext4 errors indicates a filesystem problem, not a Shoal Lua error; stop and check the microSD before retrying. See the [publishing checklist](docs/PUBLISHING.md) for the remaining release steps.
+If the script does not appear in SELECT after copying it, restart norns. Development checks live in `test/` (singular), which norns excludes from SELECT; an old `tests/` (plural) directory can appear as extra scripts. Do not put a ZIP *inside* `dust/code/shoal`; extract it on your computer first. A `SUPERCOLLIDER FAIL` accompanied by `Structure needs cleaning` or ext4 errors indicates a filesystem problem, not a Shoal Lua error; stop and check the microSD before retrying. See the [publishing checklist](docs/PUBLISHING.md) for the remaining release steps.
+
+The new script name uses a new norns data directory. Keep a backup of `/home/we/dust/data/shoal-norns/` if you have old psets; they are not moved automatically by renaming the script. The internal parameter IDs are unchanged so existing psets can be migrated separately after testing.
 
 ## The norns screen
 
