@@ -4,7 +4,7 @@ Review the wording and add your preferred public name or lines handle before pos
 
 ## Topic title
 
-shoal-norns — Shoal's generative melodies, adapted for norns
+shoal — generative melodies for norns
 
 ## Topic body
 
@@ -14,12 +14,12 @@ The norns screen keeps all four complete patterns and their live positions in vi
 
 Each track can route to built-in PolyPerc, MIDI, crow or an n.b. note player. PolyPerc, MIDI, n.b., Grid controls and pset save/recall have been tried on hardware. Crow and some high-rate/timing edge cases still need testing, so I am calling this a community beta.
 
-Source, illustrated guide and known differences: https://github.com/giovannilami/shoal-norns
+Source, illustrated guide and known differences: https://github.com/giovannilami/shoal
 
 Install from Maiden after the repository is public:
 
 ```text
-;install https://github.com/giovannilami/shoal-norns
+;install https://github.com/giovannilami/shoal
 ```
 
 The original Shoal concept and musical algorithm are Ormer Modular's; their MIT notice is included in the repository. Tide follows the NT pitch-over-fixed-rhythm behavior; some output details still differ, and the README explains these boundaries. Feedback and test reports—especially for crow and different n.b. voices—are very welcome.

@@ -2,14 +2,14 @@
 
 An incremental, test-first port of [Ormer Modular Shoal](https://github.com/ormermodular/shoal) to norns.
 
-This build is a playable norns community beta. `lib/shoal_core.lua` remains a pure Lua 5.3, eight-track reference port. The norns instrument runs four of those tracks. `lib/shoal_clock.lua` schedules them against the norns quarter-note clock; `lib/shoal_outputs.lua` routes events to PolyPerc, n.b., MIDI, or crow. `shoal-norns.lua` supplies parameters and a four-row performance screen; an optional 16 × 8 Grid provides a two-page live parameter editor without copying the sequencer. The overview uses norns Particle (face 68, size 8); `lib/shoal_font.lua` draws sharp pixel glyphs for the editing pages and an exact compact fallback for crowded overview values.
+This build is a playable norns community beta. `lib/shoal_core.lua` remains a pure Lua 5.3, eight-track reference port. The norns instrument runs four of those tracks. `lib/shoal_clock.lua` schedules them against the norns quarter-note clock; `lib/shoal_outputs.lua` routes events to PolyPerc, n.b., MIDI, or crow. `shoal.lua` supplies parameters and a four-row performance screen; an optional 16 × 8 Grid provides a two-page live parameter editor without copying the sequencer. The overview uses norns Particle (face 68, size 8); `lib/shoal_font.lua` draws sharp pixel glyphs for the editing pages and an exact compact fallback for crowded overview values.
 
 Unless noted, file paths and test commands below are relative to the repository root.
 
 ## Install and play on Norns
 
-1. From this repository copy `shoal-norns.lua`, the complete `lib/` folder, `LICENSE` and `THIRD_PARTY_NOTICES.md` into `/home/we/dust/code/shoal-norns/` on norns using SFTP or the file share. Leave `docs/` and `test/` on your computer. Do not merge the new files with an older installation: move the old `shoal-norns` folder out of `dust/code` first. The main script must end up at `/home/we/dust/code/shoal-norns/shoal-norns.lua`. An old `tests/` (plural) folder can appear as extra scripts in SELECT. When the GitHub repository is public, its URL can be passed to Maiden's `;install` command instead; see [the publishing checklist](PUBLISHING.md).
-2. Open Maiden at `norns.local`, then choose `SHOAL-NORNS` from the Norns SELECT menu. If the script is not listed yet, restart Norns or reload the script list.
+1. From this repository copy `shoal.lua`, the complete `lib/` folder, `LICENSE` and `THIRD_PARTY_NOTICES.md` into `/home/we/dust/code/shoal/` on norns using SFTP or the file share. Leave `docs/` and `test/` on your computer. Do not merge the new files with an older installation: move the old `shoal-norns` folder out of `dust/code` first. The main script must end up at `/home/we/dust/code/shoal/shoal.lua`. An old `tests/` (plural) folder can appear as extra scripts in SELECT. The public repository URL can also be passed to Maiden's `;install` command; see [the publishing checklist](PUBLISHING.md).
+2. Open Maiden at `norns.local`, then choose `SHOAL` from the Norns SELECT menu. If the script is not listed yet, restart Norns or reload the script list. Keep a backup of `/home/we/dust/data/shoal-norns/` if you have old psets; the renamed script uses its own data directory.
 3. Track 1 is routed to the built-in PolyPerc engine by default. Listen on Norns headphones or audio outputs. Tracks 2–4 start with output Off; all four advance their musical state.
 4. On the overview, use E1 to select a track, E2 for its rate, E3 for its length, K1+E2 for Chance, and K1+E3 for Evolve. K2 runs/stops; K3 arms a new seed for the selected track. Hold K1 and press K3/K2 to move forward/backward through the four script pages. More settings are in PARAMETERS.
 5. In PARAMETERS > EDIT, open one of the four `TRACK` groups to set its Output to MIDI, crow 1/2, crow 3/4, or n.b. as desired. For MIDI, set the global `MIDI port` (1–16) to the same virtual slot shown under `SYSTEM > DEVICES > MIDI` on your Norns; it defaults to 1. Set the track's `MIDI channel` to the channel expected by the receiver. You can also edit Output, MIDI port, and channel on the script's Global page. For crow, connect the first output of a pair to pitch and the second to a gate input. The pitch convention is 0 V = MIDI note 48 (C3), 1 V/octave.
@@ -261,7 +261,7 @@ lib/shoal_grid.lua       optional 16 x 8 performance controls
 lib/shoal_outputs.lua    per-track output routing and note lifecycle
 lib/shoal_pitch.lua      seed-neutral, scale-aware output pitch window
 lib/shoal_ui.lua         four-row performance view
-shoal-norns.lua          Norns params and lifecycle
+shoal.lua                Norns params and lifecycle
 ```
 
 ## Upstream licence
